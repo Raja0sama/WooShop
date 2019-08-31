@@ -3,7 +3,7 @@ import {Button} from "react-native-elements"
 import LinearGradient from "react-native-linear-gradient";
 import colors from '../colors.json'
 
-const GButton = ({onPress,Text}) => {
+const GButton = ({onPress,Text,loading}) => {
     return (
         <Button
             onPress={onPress}
@@ -18,7 +18,7 @@ const GButton = ({onPress,Text}) => {
               end: { x: 0.1, y: 0.2 }
             }}
             title={Text}
-
+            loading={loading}
           />
     )
 }

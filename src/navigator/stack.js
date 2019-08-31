@@ -13,7 +13,7 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
-import {Login,Register} from '../Screen/index'
+import {Login,Register,Home} from '../Screen/index'
 
 
 const AuthStack = createStackNavigator({
@@ -25,7 +25,14 @@ const AuthStack = createStackNavigator({
   }
 });
 
-
+const AppStack = createStackNavigator({
+  Home
+}, {
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false,
+    }
+  });
 
 
 /// 
@@ -60,7 +67,7 @@ class AuthLoadingScreen extends React.Component {
 export default createAppContainer(createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
-  //  App: MainNavigator,
+    App: AppStack,
     Auth: AuthStack,
   },
   {

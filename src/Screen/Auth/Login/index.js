@@ -4,26 +4,71 @@ import { Input } from 'react-native-elements';
 import colors from '../../../colors.json';
 import GButton from '../../../component/GButton';
 import ButtonC from '../../../component/Button';
+import { gql } from "apollo-boost";
+import { Mutation } from 'react-apollo';
+import Toast from 'react-native-simple-toast';
+import AsyncStorage from '@react-native-community/async-storage';
 
+const Loginn = gql`
+mutation LoginUser($username: String!, $password: String!) {
+    login( input: {
+      clientMutationId:"uniqueId"
+      username: $username
+      password: $password
+    } ) {
+      authToken
+      user {
+        id
+        name
+      }
+    }
+  }
+`;
 class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			email: '',
-			password: '',
+		
 			emailcolor: colors.background,
 			passwordcolor: colors.background,
-			checked: false
+			checked: false,
+			username:"",
+			password:"",
+			ll:false
 		};
 	}
+	LoginNow(login){
+		this.setState({ll:true})
+        login({
+          variables: {
+           username : this.state.username,
+           password : this.state.password
+          }
+        })
+		  .then(res => {
+			this.setState({ll:false})
+			AsyncStorage.setItem('userToken',res.data.login.authToken)
+
+		})
+		  .catch(err => {
+			Toast.show(err.graphQLErrors[0].message);
+
+			console.warn(err.graphQLErrors[0].message)
+			this.setState({ll:false})
+		});
+      
+}
 
 	render() {
 		return (
 			<View style={style.ViewStyle}>
 				<StatusBar backgroundColor={colors.background} barStyle={colors.stutsbarContent} />
 
-				<Text style={style.TextStyle}>WELCOME , </Text>
+				<Text style={style.TextStyle}>WELCOME ,</Text>
 				<Text style={style.subTextStyle}>sign in to continue</Text>
+				
+				<Mutation mutation={Loginn} >
+            {(login, { data }) => (
 				<View style={style.inputContainer}>
 					<Input
 						inputStyle={style.inputStyle}
@@ -34,6 +79,7 @@ class Login extends Component {
 							color: this.state.emailcolor,
 							size: 15
 						}}
+						onChangeText={(e)=> this.setState({username:e})}
 						placeholderTextColor={colors.color}
 					/>
 					<Input
@@ -46,11 +92,16 @@ class Login extends Component {
 							color: this.state.passwordcolor,
 							size: 15
 						}}
+						onChangeText={(e)=> this.setState({password:e})}
 						placeholderTextColor={colors.color}
 					/>
 
-					<GButton Text={'LOGIN'} onPress={() => this.props.navigation.navigate('Menu')} />
-				</View>
+					<GButton loading={this.state.ll} Text={'LOGIN'} onPress={() => this.LoginNow(login)} />
+					</View>
+					)}
+					
+					</Mutation>
+					
 				<ButtonC Text={'REGISTER ?'} onPress={() => this.props.navigation.navigate('Register')} />
 			</View>
 		);

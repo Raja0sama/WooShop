@@ -4,19 +4,57 @@ import { Input } from 'react-native-elements';
 import colors from '../../../colors.json';
 import GButton from '../../../component/GButton';
 import ButtonC from '../../../component/Button';
-
+import { gql } from "apollo-boost";
+import { Mutation } from 'react-apollo';
+import Toast from 'react-native-simple-toast';
+const Reg = gql`
+mutation REGISTER_USER($input: RegisterUserInput!) {
+	registerUser(input: $input) {
+	  user {
+		id
+		name
+	  }
+	}
+  }
+`;
 class Register extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			email: '',
-			password: '',
+			username: '',
 			emailcolor: colors.background,
 			passwordcolor: colors.background,
-			checked: false
+			checked: false,
+			ll:false
 		};
 	}
+	RegNow(registerUser){
+		this.setState({ll:true})
+        registerUser({
+          variables: {
+            input: {
+				clientMutationId: "RegisterUser",
+				username: this.state.username,
+				email: this.state.email
+			  }
+          }
+        })
+		  .then(res => {
+			  console.log(res)
+			this.setState({ll:false})
+			Toast.show("An Email has been send to you");
+		})
+		  .catch(err => {
+			var a = err.graphQLErrors[0].message
+			var n = a.indexOf(";:");
+			Toast.show(a.substring(n+3));
 
+			//console.warn(err)
+			this.setState({ll:false})
+		});
+      
+}
 	render() {
 		return (
 			<View style={style.ViewStyle}>
@@ -24,6 +62,8 @@ class Register extends Component {
 
 				<Text style={style.TextStyle}>REGISTER NOW , </Text>
 				<Text style={style.subTextStyle}>Register to create an account</Text>
+				<Mutation mutation={Reg} >
+				 {(registerUser, { data }) => (
 				<View style={style.inputContainer}>
 					<Input
 						inputStyle={style.inputStyle}
@@ -35,6 +75,8 @@ class Register extends Component {
 							size: 15
 						}}
 						placeholderTextColor={colors.color}
+						onChangeText={(e)=> this.setState({username:e})}
+
 					/>
 					<Input
 						inputStyle={style.inputStyle}
@@ -46,10 +88,12 @@ class Register extends Component {
 							size: 15
 						}}
 						placeholderTextColor={colors.color}
+						onChangeText={(e)=> this.setState({email:e})}
+
 					/>
 
-					<GButton Text={'SIGN UP'} onPress={() => this.props.navigation.navigate('Menu')} />
-				</View>
+					<GButton loading={this.state.ll} Text={'SIGN UP'} onPress={() => this.RegNow(registerUser)} />
+				</View>)}</Mutation>
 				<ButtonC Text={'LOGIN ?'} onPress={() => this.props.navigation.navigate('Login')} />
 			</View>
 		);
