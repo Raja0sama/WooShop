@@ -20,6 +20,12 @@ mutation LoginUser($username: String!, $password: String!) {
       user {
         id
         name
+        avatar{
+          url
+        }
+        email
+        lastName
+        firstName
       }
     }
   }
@@ -28,7 +34,7 @@ class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-		
+
 			emailcolor: colors.background,
 			passwordcolor: colors.background,
 			checked: false,
@@ -47,7 +53,7 @@ class Login extends Component {
         })
 		  .then(res => {
 			this.setState({ll:false})
-			AsyncStorage.setItem('userToken',res.data.login.authToken)
+      AsyncStorage.setItem('userToken',JSON.stringify(res.data.login))
 
 		})
 		  .catch(err => {
@@ -56,7 +62,7 @@ class Login extends Component {
 			console.warn(err.graphQLErrors[0].message)
 			this.setState({ll:false})
 		});
-      
+
 }
 
 	render() {
@@ -66,7 +72,7 @@ class Login extends Component {
 
 				<Text style={style.TextStyle}>WELCOME ,</Text>
 				<Text style={style.subTextStyle}>sign in to continue</Text>
-				
+
 				<Mutation mutation={Loginn} >
             {(login, { data }) => (
 				<View style={style.inputContainer}>
@@ -99,9 +105,9 @@ class Login extends Component {
 					<GButton loading={this.state.ll} Text={'LOGIN'} onPress={() => this.LoginNow(login)} />
 					</View>
 					)}
-					
+
 					</Mutation>
-					
+
 				<ButtonC Text={'REGISTER ?'} onPress={() => this.props.navigation.navigate('Register')} />
 			</View>
 		);

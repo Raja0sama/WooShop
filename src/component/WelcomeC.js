@@ -5,7 +5,8 @@ import colors from '../colors.json'
 
 
 
-const WelcomeC = ({navigation}) => {
+const WelcomeC = ({navigation,user}) => {
+  console.log(user)
     return (
         <View style={{ marginLeft: 20,marginRight:20, marginTop: 10 }}>
 
@@ -23,7 +24,7 @@ const WelcomeC = ({navigation}) => {
 
               fontSize: 25,
               fontFamily: 'Montserrat-Bold'
-            }}>Raja Osama</Text>
+            }}>{user== "" ? "": user.user.name}</Text>
           </View>
 
           <View style={{ flex: 1, flexDirection: 'row-reverse', height: 100 }} >
@@ -31,7 +32,7 @@ const WelcomeC = ({navigation}) => {
               rounded
               size="large"
 
-              source={require('../../assets/profile.jpg')}
+              source={user== "" ? (require('../../assets/profile.jpg')): {uri:user.user.name}}
             />
           </View>
 
