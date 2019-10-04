@@ -6,7 +6,6 @@ import colors from '../colors.json'
 
 
 const WelcomeC = ({navigation,user}) => {
-  console.log(user)
     return (
         <View style={{ marginLeft: 20,marginRight:20, marginTop: 10 }}>
 
@@ -18,21 +17,20 @@ const WelcomeC = ({navigation,user}) => {
               fontSize: 22,
               top: 8,
               fontFamily: "Montserrat-Light"
-            }}>Welcome,</Text>
+            }}>Welcome 🤘, </Text>
             <Text style={{
               color: colors.color,
 
               fontSize: 25,
               fontFamily: 'Montserrat-Bold'
-            }}>{user== "" ? "": user.user.name}</Text>
+            }}>{user== "" ? "": user.user.name.toUpperCase()}</Text>
           </View>
 
           <View style={{ flex: 1, flexDirection: 'row-reverse', height: 100 }} >
             <Avatar
               rounded
               size="large"
-
-              source={user== "" ? (require('../../assets/profile.jpg')): {uri:user.user.name}}
+              source={user== "" ? (require('../../assets/profile.jpg')): {uri:user.user.avatar.url}}
             />
           </View>
 

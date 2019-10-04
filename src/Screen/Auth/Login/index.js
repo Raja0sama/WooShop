@@ -8,6 +8,8 @@ import { gql } from "apollo-boost";
 import { Mutation } from 'react-apollo';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-community/async-storage';
+import { connect } from 'react-redux'
+import {LOGINUSER} from '../../../Redux/Constants'
 
 const Loginn = gql`
 mutation LoginUser($username: String!, $password: String!) {
@@ -34,7 +36,6 @@ class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-
 			emailcolor: colors.background,
 			passwordcolor: colors.background,
 			checked: false,
@@ -42,6 +43,9 @@ class Login extends Component {
 			password:"",
 			ll:false
 		};
+	}
+	componentDidMount(){
+
 	}
 	LoginNow(login){
 		this.setState({ll:true})
@@ -53,7 +57,9 @@ class Login extends Component {
         })
 		  .then(res => {
 			this.setState({ll:false})
-      AsyncStorage.setItem('userToken',JSON.stringify(res.data.login))
+	  AsyncStorage.setItem('userToken',JSON.stringify(res.data.login))
+	  this.props.dispatch({type:'LOGINUSER',user:res.data.login})
+      this.props.navigation.navigate('App');
 
 		})
 		  .catch(err => {
@@ -66,6 +72,7 @@ class Login extends Component {
 }
 
 	render() {
+		
 		return (
 			<View style={style.ViewStyle}>
 				<StatusBar backgroundColor={colors.background} barStyle={colors.stutsbarContent} />
@@ -141,4 +148,11 @@ const style = StyleSheet.create({
 		flex: 1
 	}
 });
-export default Login;
+const mapStateToProps = (state /*, ownProps*/) => {
+	console.log(state)
+	return {
+	}
+  }
+  
+export default connect(
+	mapStateToProps  )(Login);

@@ -44,6 +44,7 @@ class Register extends Component {
 			  console.log(res)
 			this.setState({ll:false})
 			Toast.show("An Email has been send to you");
+
 		})
 		  .catch(err => {
 			var a = err.graphQLErrors[0].message
@@ -53,7 +54,7 @@ class Register extends Component {
 			//console.warn(err)
 			this.setState({ll:false})
 		});
-      
+
 }
 	render() {
 		return (
