@@ -1,12 +1,12 @@
 import CarC from '../../../../component/ICard';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { View,Dimensions,StyleSheet,Text,ActivityIndicator } from 'react-native';
 import colors from '../../../../colors.json';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { SliderBox } from 'react-native-image-slider-box';
 import striptags from "striptags"
-
+import Attributes from './attributes'
 const GET_PRODUCT = (query) => gql`
 query {
   product( id: "${query}") {
@@ -43,8 +43,7 @@ query {
 }
 `;
 const GetProduct = (props) =>{
-  var { height, width } = Dimensions.get('window');
-	const { data, loading, error } = useQuery(GET_PRODUCT(props.query));
+  const { data, loading, error } = useQuery(GET_PRODUCT(props.query));
 	if (loading) return <ActivityIndicator size="large" color={colors.color} />;
   if (error) return <Text>ERROR</Text>;
 
@@ -59,7 +58,7 @@ const GetProduct = (props) =>{
 
 	return (
     <View>
-					<View style={{ flex: 1, height: 400, marginRight: 30, marginLeft: 30 }} onLayout={this.onLayout}>
+					<View style={{ flex: 1, height: 400, marginRight: 30, marginLeft: 30 }} onLayout={props.onLayout}>
 
 						<SliderBox
 							images={gallery}
@@ -69,9 +68,12 @@ const GetProduct = (props) =>{
 							}
 							parentWidth={props.width}
 						/>
+          
 					</View>
 					<View style={{ flex: 1, margin: 30, alignItems: "center" }}>
 						<Text style={style.TextStyle}>✔{data.product.name} </Text>
+            <Text style={{		fontFamily: 'Montserrat-Bold',	fontSize: 23,color: colors.themeC}}> 
+            {data.product.onSale ? "🛒 Sale" : ""} </Text>
 						<Text style={style.CStyle}>{cat.join(', ')} </Text>
 						<Text style={{ fontSize: 22, fontFamily: 'Montserrat-Light', color: colors.color }}>
             {data.product.price.replace('$','💲')}
@@ -79,7 +81,8 @@ const GetProduct = (props) =>{
 						<Text style={{ fontSize: 18, fontFamily: 'Montserrat-Light', color: colors.color }}>
           🔵{striptags(data.product.description)}
         </Text>
-
+        <Attributes/>
+     
 					</View>
           </View>
         )
@@ -101,43 +104,3 @@ const style = StyleSheet.create({
 	}
 });
 export default GetProduct
-query {
-  product( id: "cHJvZHVjdDo3Nw==") {
-    id
-    categories{
-      nodes{
-        name
-        children{
-          nodes{
-            name
-          }
-        }
-      }
-    }
-    price
-		productId
-    name
-    date
-    description
-    shortDescription
-    sku
-    stockStatus
-    onSale
-    purchaseNote
-    attributes{
-      nodes{
-        name
-        options
-        visible
-      }
-    }
-    image{
-      sourceUrl
-    }
-    galleryImages{
-      nodes{
-        sourceUrl
-      }
-    }
-  }
-}

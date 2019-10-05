@@ -29,7 +29,7 @@ class Single extends Component {
 			<View style={style.ViewStyle}>
 				<HeaderC navigation={this.props.navigation} />
 				<ScrollView style={{ flex: 1 }}>
-					<GetProduct width={this.state.width} query={this.props.navigation.getParam('id', null)} />
+					<GetProduct onLayout={this.onLayout} width={this.state.width} query={this.props.navigation.getParam('id', null)} />
 					
 				</ScrollView>
 				<View style={{ height: 40, backgroundColor: colors.background, borderTopRightRadius: 30, flexDirection: 'row' }}>
