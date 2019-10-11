@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 
 const GET_PRODUCTS = (orderby) =>gql`
 {
-  products(first: 15, where:{orderby:${orderby}}){
+  products(first: 200, where:{orderby:${orderby}}){
     nodes {
       id
       productId

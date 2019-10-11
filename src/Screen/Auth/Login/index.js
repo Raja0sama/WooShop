@@ -20,7 +20,8 @@ mutation LoginUser($username: String!, $password: String!) {
     } ) {
       authToken
       user {
-        id
+		id
+		userId
         name
         avatar{
           url
@@ -56,6 +57,7 @@ class Login extends Component {
           }
         })
 		  .then(res => {
+			  console.log(res)
 			this.setState({ll:false})
 	  AsyncStorage.setItem('userToken',JSON.stringify(res.data.login))
 	  this.props.dispatch({type:'LOGINUSER',user:res.data.login})

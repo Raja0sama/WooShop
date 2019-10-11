@@ -13,6 +13,7 @@ import {
 import colors from '../../../../colors.json';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+let i = 0
 
 const GET_PRODUCTS = (orderby) => gql `
 query {
@@ -21,21 +22,17 @@ query {
 `;
 const GetProducts = (props) => {
   let Cart = props.Cart;
-  let cart = [];
-  Cart.forEach((element) => {
-    console.log(element);
-    if (cart.some((item) => item.id === element.id)) {
-      const a = cart.findIndex((i) => i.id === element.id);
-      // console.log(cart.findIndex(i => i.id === element.id))
-      cart[a].Q = cart[a].Q + element.Q;
-    } else {
-      cart.push(element);
-    }
-  });
-  console.log(cart);
-  let a = Refactoring(cart);
-  // console.log(a)
-  const {data, loading, error} = useQuery(GET_PRODUCTS(Refactoring(cart)));
+  // let cart = []; Cart.forEach((element) => {   console.log(element);   if
+  // (cart.some((item) => item.id === element.id)) {     const a =
+  // cart.findIndex((i) => i.id === element.id);     //
+  // console.log(cart.findIndex(i => i.id === element.id))     cart[a].Q =
+  // cart[a].Q + element.Q;   } else {     cart.push(element);   } });
+  // console.log(cart); let a = Refactoring(cart); console.log(a)
+
+  if (!Refactoring(Cart)) 
+    return <Text style={{marginLeft:20}}>Empty !</Text>;
+  
+  const {data, loading, error} = useQuery(GET_PRODUCTS(Refactoring(Cart)));
   if (loading) 
     return <ActivityIndicator size="large" color={colors.color}/>;
   if (error) 
@@ -45,18 +42,28 @@ const GetProducts = (props) => {
     .map(function (key) {
       return [Number(key), data[key]];
     });
-  console.log(props.Cart)
+    let total = 0
 
-  return (
+    result.forEach((element,i) => {
+    const tot = parseFloat(element[1].price.replace('$',''))
+    const  Q =  Cart[i].Q
+      total =  total + tot * Q
+    });
+    console.log(total)
+      props.MakeTotal(total)
+    
+    
+    return (
     <View>
       {result.map((e, i) => {
-        return <CheckoutCard ind={Cart[i]} data={e}/>;
+        return <CheckoutCard index={i} ind={Cart[i]} data={e}/>;
       })}
     </View>
   );
 };
 
 function Refactoring(Cart) {
+  console.log(Cart)
   const Alph = [
     'A',
     'B',
@@ -95,6 +102,8 @@ function Refactoring(Cart) {
       description
     }`;
   });
-  return a;
+  return Cart.length == 0
+    ? false
+    : a;
 }
 export default GetProducts;

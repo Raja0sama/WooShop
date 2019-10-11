@@ -2,14 +2,21 @@ import React from 'react'
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import colors from '../../../colors.json';
 import HeaderC from '../../../component/header';
-import CheckoutCard from '../../../component/CheckoutCard';
 import {connect } from 'react-redux'
 import GetProducts from './GraphQLComponent/Product'
-
+let total = 0
 class Cart extends React.Component {
-   
+    constructor(props){
+        super(props)
+        this.state = {
+            total : 0
+        }
+    }
+   MakeTotal = (amount) =>{
+       total = amount
+   }
     render(){
-        console.log(this.props.Cart)
+        
         return(
             <View style={style.ViewStyle}>
             <HeaderC navigation={this.props.navigation} />
@@ -17,7 +24,7 @@ class Cart extends React.Component {
                 <Text style={{ fontSize: 32, marginLeft: 20, fontFamily: 'Montserrat-Bold', color: colors.color }}>
                     Check Out
                 </Text>
-                <GetProducts Cart={this.props.Cart} />
+                <GetProducts MakeTotal={this.MakeTotal}  Cart={this.props.Cart.cart} />
             </ScrollView>
             <View
                 style={{
@@ -36,7 +43,9 @@ class Cart extends React.Component {
                         backgroundColor: colors.background
                     }}
                 >
-                    <Text style={{ color: colors.color, fontWeight: 'bold', fontSize: 20 }}>$231,2.0</Text>
+                    <Text style={{ color: colors.color, fontWeight: 'bold', fontSize: 20 }}>
+                        {total}
+                    </Text>
                 </View>
                 <View
                     style={{
@@ -47,8 +56,9 @@ class Cart extends React.Component {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}
+                    
                 >
-                    <Text style={{ color: 'white', fontFamily: 'Montserrat-Bold', fontSize: 15 }}>
+                    <Text onPress={()=>this.props.navigation.navigate('Checkout')} style={{ color: 'white', fontFamily: 'Montserrat-Bold', fontSize: 15 }}>
                         Procced to Checkout
                     </Text>
                 </View>
@@ -68,9 +78,8 @@ const style = StyleSheet.create({
 	}
 });
 const mapStateToProps = (state /*, ownProps*/) => {
-	console.log(state)
 	return {
-        Cart : state.Cart.cart
+        Cart : state.Cart
 	}
 }
 export default connect(

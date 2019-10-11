@@ -1,12 +1,16 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, ScrollView,FlatList,Text,ActivityIndicator } from 'react-native';
+import React, { Component, useState } from 'react';
+import { View,  ScrollView,FlatList,Text,ActivityIndicator } from 'react-native';
 import { Input ,Image,Badge, Icon } from 'react-native-elements';
 import colors from '../colors.json';
 import striptags from 'striptags';
+import {connect } from 'react-redux'
 
 
-const CheckoutCard = ({data,ind}) => {
-     console.log(ind)
+const CheckoutCard = ({data,ind,index,dispatch}) => {
+    const [state, setstate] = useState(true);
+    if(!state){
+        return <View></View>
+    }
     return (
         <View style={{height:130,borderTopWidth:0.1,borderBottomWidth:0.1,borderColor:colors.color,flexDirection:"row",marginTop:10,marginBottom:5}}>
         <View style={{backgroundColor:colors.themeC,width:130}}>
@@ -41,7 +45,7 @@ const CheckoutCard = ({data,ind}) => {
             <View style={{flexDirection:"row-reverse",flex:1}}>
 
             <Text style={{fontSize:16,top:5,left:10,fontFamily: 'Montserrat-Light',color:colors.color}}>
-                   Total $32
+            {data[1].price}{" T $"+parseInt(data[1].price.replace('$',''))*parseInt(ind.Q)}
             </Text>
             
             </View>
@@ -56,8 +60,19 @@ const CheckoutCard = ({data,ind}) => {
                color='white'></Icon>
                    }
                containerStyle={{ position: 'absolute', top: 0, right: 4 }}
+               onPress={()=> {
+                setstate(false)   
+                dispatch({type:'CART_DELETE',product:index})
+            }}
            />
        </View>
     )
 }
-export default CheckoutCard
+
+const mapStateToProps = (state /*, ownProps*/) => {
+	return {
+        Cart : state.Cart.cart
+	}
+}
+export default connect(
+	mapStateToProps  )(CheckoutCard);

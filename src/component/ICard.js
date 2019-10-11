@@ -37,7 +37,7 @@ class CarC extends Component {
             <Text style={{marginBottom: 10,fontSize:12,top:-5,fontFamily:'Montserrat-Light',color:colors.color}}>
               {striptags(item.description.substring(0, 50))+'...'}
             </Text>
-           <GButton onPress={()=> this.props.navigation.navigate('Single',{id : item.id })} Text={item.price}/>
+           <GButton onPress={()=> this.props.navigation.navigate('Single',{id : item.id,product : item.productId })} Text={item.price}/>
           </Card>
         )
     }

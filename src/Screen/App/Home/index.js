@@ -104,6 +104,7 @@ const style = StyleSheet.create({
 const mapStateToProps = (state /*, ownProps*/) => {
 	console.log(state)
 	return {
+		state : state
 	}
 	}
 export default connect(
