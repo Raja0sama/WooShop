@@ -10,7 +10,7 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux'
 import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
-import {Login,Register,Home,Detail,Single} from '../Screen/index'
+import {Login,Register,Home,Detail,Single,Cart} from '../Screen/index'
 
 
 const AuthStack = createStackNavigator({
@@ -23,7 +23,7 @@ const AuthStack = createStackNavigator({
 });
 
 const AppStack = createStackNavigator({
-  Home,Detail,Single
+  Home,Detail,Single,Cart
 }, {
     headerMode: 'none',
     navigationOptions: {

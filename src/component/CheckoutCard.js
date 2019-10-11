@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, ScrollView,FlatList,Text,ActivityIndicator } from 'react-native';
 import { Input ,Image,Badge, Icon } from 'react-native-elements';
 import colors from '../colors.json';
+import striptags from 'striptags';
 
 
-const CheckoutCard = ({}) => {
+const CheckoutCard = ({data,ind}) => {
+     console.log(ind)
     return (
         <View style={{height:130,borderTopWidth:0.1,borderBottomWidth:0.1,borderColor:colors.color,flexDirection:"row",marginTop:10,marginBottom:5}}>
         <View style={{backgroundColor:colors.themeC,width:130}}>
         <Image
-           source={{ uri: "https://www.incimages.com/uploaded_files/image/970x450/products_364475.jpg" }}
+           source={{ uri: data[1].image.sourceUrl }}
            style={{ width: 130, height: 130 }}
            PlaceholderContent={<ActivityIndicator />}
            />          
@@ -18,20 +20,20 @@ const CheckoutCard = ({}) => {
             <View style={{flex:1,margin:10}}>
                 <ScrollView>
                 <Text style={{fontSize:22,fontFamily: 'Montserrat-Light',color:colors.color}}>
-                   Bulb 25 volts
+                    {data[1].name}
             </Text>
             <Text style={{fontSize:15,fontFamily: 'Montserrat-Light',color:colors.color}}>
-            The idea with React Native Elements is mor.
-            </Text>
+                    {striptags(data[1].description)}
+             </Text>
                     </ScrollView>
           
             </View>
         <View style={{height:30,flexDirection:"row"}}>
            
            <Input containerStyle={{width:30}}
-           inputContainerStyle={{width:30,height:25,color:colors.color}}
+           inputContainerStyle={{width:30,height:25}}
            inputStyle={{color:colors.color}}
-           value='3'
+           value={''+ind.Q}
            />
             <Text style={{fontSize:16,top:5,left:10,fontFamily: 'Montserrat-Light',color:colors.color}}>
                    Quantity

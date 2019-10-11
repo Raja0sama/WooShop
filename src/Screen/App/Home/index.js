@@ -10,7 +10,7 @@ import TCarC from '../../../component/TCard';
 import AsyncStorage from '@react-native-community/async-storage';
 import GetCat from './GraphQLComponent/Cat.js'
 import GetPop from './GraphQLComponent/Popular.js'
-
+import {connect } from 'react-redux'
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -55,6 +55,7 @@ class Home extends Component {
 										fontSize: 18,
 										fontFamily: 'Montserrat-SemiBold'
 									}}
+									onPress={()=>console.log("Hey")							}
 								>
 									Categories
 								</Text>
@@ -100,4 +101,10 @@ const style = StyleSheet.create({
 		flex: 1
 	}
 });
-export default Home;
+const mapStateToProps = (state /*, ownProps*/) => {
+	console.log(state)
+	return {
+	}
+	}
+export default connect(
+	mapStateToProps  )(Home);

@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, Text, TouchableHighlight } from 'react-native';
 import { Icon } from 'react-native-elements';
 import colors from '../../../colors.json';
 import HeaderC from '../../../component/header';
-import { SliderBox } from 'react-native-image-slider-box';
+import {connect } from 'react-redux'
 import GetProduct from './GraphQLComponent/Product'
 
 class Single extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			images: [
-				'https://source.unsplash.com/1024x768/?nature',
-				'https://source.unsplash.com/1024x768/?water',
-				'https://source.unsplash.com/1024x768/?girl',
-				'https://source.unsplash.com/1024x768/?tree'
-			]
+			q : 0
 		};
 		console.log(this.props.navigation.getParam('id', null))
 	}
@@ -29,7 +24,7 @@ class Single extends Component {
 			<View style={style.ViewStyle}>
 				<HeaderC navigation={this.props.navigation} />
 				<ScrollView style={{ flex: 1 }}>
-					<GetProduct onLayout={this.onLayout} width={this.state.width} query={this.props.navigation.getParam('id', null)} />
+					<GetProduct  query={this.props.navigation.getParam('id', null)} />
 					
 				</ScrollView>
 				<View style={{ height: 40, backgroundColor: colors.background, borderTopRightRadius: 30, flexDirection: 'row' }}>
@@ -40,9 +35,10 @@ class Single extends Component {
 							type='font-awesome'
 							color={colors.themeC}
 							size={12}
+							onPress={()=> this.setState({q : this.state.q + 1})}
 						/>
-						<Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>
-							1
+						<Text style={{ color: colors.color, fontWeight: 'bold', fontSize: 20 }}>
+							{this.state.q}
                 </Text>
 						<Icon
 							reverse
@@ -50,10 +46,12 @@ class Single extends Component {
 							type='font-awesome'
 							color={colors.themeC}
 							size={12}
+							onPress={()=> this.setState({q : this.state.q - 1})}
+
 						/>
 					</View>
 					<View style={{ flex: 2, backgroundColor: colors.themeC, borderTopRightRadius: 30, borderBottomLeftRadius: 30, justifyContent: 'center', alignItems: 'center' }}>
-						<Text style={{ color: 'white', fontFamily: 'Montserrat-Bold', fontSize: 15, marginRight: 30 }}>
+						<Text onPress={()=> this.props.dispatch({type:'CART_ADD',product:{Q : this.state.q, id : this.props.navigation.getParam('id', null)}})}  style={{ color: 'white', fontFamily: 'Montserrat-Bold', fontSize: 15, marginRight: 30 }}>
 							Add to Cart
                 </Text>
 					</View>
@@ -72,4 +70,10 @@ const style = StyleSheet.create({
 		fontFamily: 'Montserrat-Bold'
 	}
 });
-export default Single;
+const mapStateToProps = (state /*, ownProps*/) => {
+	console.log(state)
+	return {
+	}
+}
+export default connect(
+	mapStateToProps  )(Single);
