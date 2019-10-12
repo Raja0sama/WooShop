@@ -9,7 +9,6 @@ import { Mutation } from 'react-apollo';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux'
-import {LOGINUSER} from '../../../Redux/Constants'
 
 const Loginn = gql`
 mutation LoginUser($username: String!, $password: String!) {

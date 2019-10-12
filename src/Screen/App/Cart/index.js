@@ -15,6 +15,11 @@ class Cart extends React.Component {
    MakeTotal = (amount) =>{
        total = amount
    }
+   falling(){
+    this.props.Cart.cart.forEach(element => {
+        console.log(element)
+    });
+}
     render(){
         
         return(
@@ -58,7 +63,7 @@ class Cart extends React.Component {
                     }}
                     
                 >
-                    <Text onPress={()=>this.props.navigation.navigate('Checkout')} style={{ color: 'white', fontFamily: 'Montserrat-Bold', fontSize: 15 }}>
+                    <Text onPress={()=>this.falling()} style={{ color: 'white', fontFamily: 'Montserrat-Bold', fontSize: 15 }}>
                         Procced to Checkout
                     </Text>
                 </View>

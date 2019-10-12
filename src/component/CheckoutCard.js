@@ -8,9 +8,7 @@ import {connect } from 'react-redux'
 
 const CheckoutCard = ({data,ind,index,dispatch}) => {
     const [state, setstate] = useState(true);
-    if(!state){
-        return <View></View>
-    }
+ 
     return (
         <View style={{height:130,borderTopWidth:0.1,borderBottomWidth:0.1,borderColor:colors.color,flexDirection:"row",marginTop:10,marginBottom:5}}>
         <View style={{backgroundColor:colors.themeC,width:130}}>

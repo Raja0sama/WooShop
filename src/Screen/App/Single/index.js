@@ -76,12 +76,18 @@ class Single extends Component {
 							loading={this.state.loading}
 							buttonStyle={{ flex: 1, backgroundColor: colors.themeC }}
 							title={'ADD to Cart'}
-							onPress={()=> {
-								this.setState({loading : true})
-								this.props.dispatch({type:'CART_ADD',product:{Q : this.state.q, id : this.props.navigation.getParam('id', null),Pid : this.props.navigation.getParam('product', null)}
-							})
-							this.setState({loading : false})
-						}}  
+							onPress={() => {
+								this.setState({ loading: true });
+								this.props.dispatch({
+									type: 'CART_ADD',
+									product: {
+										Q: this.state.q,
+										id: this.props.navigation.getParam('id', null),
+										Pid: this.props.navigation.getParam('product', null)
+									}
+								});
+								this.setState({ loading: false });
+							}}
 						/>
 						{/* <Text onPress={()=> {
 							
