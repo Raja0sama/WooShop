@@ -27,12 +27,13 @@ const HeaderC = ({navigation,heading,Cart},props) => {
           type='antdesign'
           onPress={()=> navigation.navigate('Cart')}
           color={colors.themeC}/>
-          <Badge
+          {Cart.cart.length != 0 ? (<Badge
           status="primary"
           onPress={()=> navigation.navigate('Cart')}
           value={<Text style={{fontSize:10}}>{Cart.cart ? Cart.cart.length : 0}</Text>}
           containerStyle={{ position: 'absolute', top: -4, right: -4 }}
-        /></View>}
+        />) : (<View></View>)}
+          </View>}
         />
         </View>
     )

@@ -7,6 +7,11 @@ import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import AsyncStorage from '@react-native-community/async-storage';
 import HeaderC from '../../../component/header';
+import axios from 'axios';
+import { print } from 'graphql';
+import Toast from 'react-native-simple-toast';
+import {connect } from 'react-redux'
+
 
 const CheckoutQ = gql`
 	mutation checkout($input: CheckoutInput!) {
@@ -28,11 +33,57 @@ const CheckoutQ = gql`
 		}
 	}
 `;
+const Loginn = gql`
+mutation LoginUser($username: String!, $password: String!) {
+    login( input: {
+      clientMutationId:"uniqueId"
+      username: $username
+      password: $password
+    } ) {
+      authToken
+      user {
+		id
+		userId
+        name
+        avatar{
+          url
+        }
+        email
+        lastName
+        firstName
+      }
+    }
+  }
+`;
+
+const ADD_SKILL = (qty,id,mut) => JSON.stringify({
+    query: `mutation {
+    addToCart( input:  {    quantity: ${qty},    productId: ${id},    clientMutationId: "${mut}" }) {
+        clientMutationId
+        cartItem {
+            key
+            product {
+                id
+            }
+            variation {
+                id
+            }
+            quantity
+            subtotal
+            subtotalTax
+            total
+            tax
+        }
+    }
+}
+`  });
 class Checkout extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			checked: false
+			checked: false,
+			isLogout : true,
+			isVisible:false
         };
         
         AsyncStorage.getItem('userToken').then(res => {
@@ -71,20 +122,97 @@ class Checkout extends React.Component {
 
 	}
 	checkout(params) {
-		params().then(res=>{
-            console.log(res)
-        }).catch(err=>{
-            console.log(err)
+	this.falling().then(res=>{
+		params().then(res=> {
+			let a = this.props.Cart.cart.length
+			for(let i = 0; i < a; i++){
+				this.props.dispatch({type:'CART_DELETE',product:0})
+			}
+
+		}).catch(err=> console.log(err))
+		
+	}).catch(err => console.log(err))
+
+	 }
+	falling(){
+		return new Promise((resolve,rejects)=>{
+			this.props.Cart.cart.forEach(async element  => {
+				console.log(JSON.parse(ADD_SKILL(element.Q,element.Pid,"Mut"+Math.random())))
+
+				const response = await fetch("https://eproject.tk/graphql", {
+					headers: {'content-type': 'application/json',
+					"Authorization": "Bearer "+this.state.user.authToken
+				},
+					method: 'POST',
+					body: ADD_SKILL(element.Q,element.Pid,"Mut"+Math.random())
+				  })
+				  const responseJson = await response.json();
+				  if(responseJson.data){
+					resolve(responseJson)
+				  }else{
+					rejects(responseJson)
+				  }
+			// 	axios
+			// 	.post("https://eproject.tk/graphql", {
+			// 	  query: print(ADD_SKILL),
+			// 	  variables: {
+			// 		input: {
+			// 		  quantity: element.Q,
+			// 		  productId: element.Pid,
+			// 		  clientMutationId: "Mut"+Math.random()
+			// 		}
+			// 	}}, {
+			// 		headers: {
+            //             "Authorization": "Bearer "+this.state.user.authToken
+			// 		}
+			// 	  })
+			// 	.then(res => {
+			// 		console.log(res.data.data)
+			// 		if(!!res.data.data){
+			// 			resolve(true)
+			// 	}})
+			// 	.catch(error => {
+			// 		console.log(error.response) 
+			// 	})    
+		});
+			
+		})
+	}
+	Login(){
+		axios
+        .post("https://eproject.tk/graphql", {
+          query: print(Loginn),
+          variables: {
+			"username": this.state.username,
+			"password" : this.state.password
+          }
         })
+        .then(res => {
+			if(res.data.data){
+				Toast.show("Successfull Logged In");
+				console.log(res)
+				AsyncStorage.setItem('userToken',JSON.stringify(res.data.data.login))
+				this.props.dispatch({type:'LOGINUSER',user:res.data.data.login})
+				this.props.navigation.navigate('App');
+				AsyncStorage.getItem('userToken').then(res => {
+					this.setState({user:JSON.parse(res)})
+				})
+				this.setState({isLogout : false})
+			}else{
+				Toast.show("Make sure to enter username and password correctly");
+			}
+		})
+        .catch(err => console.log(err))    
 	}
 	render() {
+		console.log(this.state)
 		return (
 			<View>
 				<HeaderC heading={'Checkout'} navigation={this.props.navigation} />
 				<ScrollView>
                     <Mutation 
                     context={{ headers: {
-                        authorization: this.state.user ? `Bearer ${this.state.user.authToken}` : ""
+                        "Authorization": this.state.user ? `Bearer ${this.state.user.authToken}` : ""
                       }}}
                     variables={{
                             "input": {
@@ -162,7 +290,7 @@ class Checkout extends React.Component {
 								</Card>
 								<TouchableOpacity
 									onPress={() => {
-									CheckoutInput();
+									this.checkout(CheckoutInput);
 									}}
 								>
 									<LinearGradient
@@ -186,14 +314,13 @@ class Checkout extends React.Component {
 						)}
 					</Mutation>
 				</ScrollView>
-				{this.state.isLogout ? (
 					<Overlay isVisible={this.state.isLogout}>
 						<Text style={{ color: colors.color, margin: 20 }}>
 							{' '}
-							OH You Are Logged Out! Login Again Kindly
-						</Text>
+Enter Your Credientials again kindly						</Text>
 						<Input placeholder="User Name" onChangeText={(e) => this.setState({ username: e })} />
 						<Input placeholder="Password" onChangeText={(e) => this.setState({ password: e })} />
+						<TouchableOpacity onPress={()=> this.Login()}>
 						<LinearGradient
 							start={{ x: 1, y: 2 }}
 							end={{ x: 0.1, y: 0.2 }}
@@ -206,15 +333,29 @@ class Checkout extends React.Component {
 								backgroundColor: colors.themeC,
 								borderRadius: 20
 							}}
+							
 						>
 							<Text style={{ color: colors.rcolor, fontSize: 15 }}>Login</Text>
-						</LinearGradient>
+						</LinearGradient></TouchableOpacity>
 					</Overlay>
-				) : (
-					<View />
-				)}
+					<Overlay isVisible={this.state.isVisible}>
+					<View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+					<Text style={{fontSize:150}}>✔</Text>
+					<Text style={{fontSize:20}}>Success</Text>
+
+					</View>
+					</Overlay>
+
 			</View>
 		);
 	}
 }
-export default Checkout;
+const mapStateToProps = (state /*, ownProps*/) => {
+	console.log(state)
+	return {
+		Cart : state.Cart
+	}
+  }
+  
+export default connect(
+	mapStateToProps  )(Checkout);
