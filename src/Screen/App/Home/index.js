@@ -70,7 +70,7 @@ class Home extends Component {
 									}}
 									onPress={() => {
 										AsyncStorage.removeItem('userToken')
-										this.props.navigation.navigate('AuthLoading');
+										this.props.navigation.navigate('Cate');
 									}}
 								>
 									more

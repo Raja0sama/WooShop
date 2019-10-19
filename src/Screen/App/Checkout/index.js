@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { Input, Card, CheckBox, Overlay } from 'react-native-elements';
+import { Input, Card, CheckBox, Overlay,Button } from 'react-native-elements';
 import colors from '../../../colors.json';
 import LinearGradient from 'react-native-linear-gradient';
 import { Mutation } from 'react-apollo';
@@ -128,7 +128,7 @@ class Checkout extends React.Component {
 			for(let i = 0; i < a; i++){
 				this.props.dispatch({type:'CART_DELETE',product:0})
 			}
-
+			this.setState({isVisible:true})
 		}).catch(err=> console.log(err))
 		
 	}).catch(err => console.log(err))
@@ -342,7 +342,7 @@ Enter Your Credientials again kindly						</Text>
 					<View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
 					<Text style={{fontSize:150}}>✔</Text>
 					<Text style={{fontSize:20}}>Success</Text>
-
+					<Button onPress={()=> this.setState({isVisible:false})} title="Close"/>
 					</View>
 					</Overlay>
 
