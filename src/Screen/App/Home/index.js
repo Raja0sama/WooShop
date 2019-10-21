@@ -29,12 +29,12 @@ class Home extends Component {
 	updateSearch = (search) => {
 		this.setState({ search });
 	};
-	_renderItem({ item, index }) {
+	_renderItem = ({ item, index })=> {
 		const a = index;
-		return <TCarC a={a} width={140} radius={7} Texts={item.node.name} />;
+		return <TCarC data={item} navigation={this.props.navigation} a={a} width={140} radius={7} Texts={item.name} />;
 	}
 	_renderItem1({ item, index }) {
-		return <CarC  data={{ item, index }} />;
+		return <CarC   data={{ item, index }} />;
 	}
 
 

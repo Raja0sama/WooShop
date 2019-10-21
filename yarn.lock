@@ -5594,6 +5594,11 @@ react-native-safe-area-view@^0.14.1:
   dependencies:
     debounce "^1.2.0"
 
+react-native-scrolling-button-menu@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-scrolling-button-menu/-/react-native-scrolling-button-menu-0.0.4.tgz#94464e281d285c2deb1ab66ce645618bf3102bf7"
+  integrity sha1-lEZOKB0oXC3rGrZs5kVhi/MQK/c=
+
 react-native-simple-toast@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/react-native-simple-toast/-/react-native-simple-toast-0.1.1.tgz#675755e7293438c77e7d1f40989b902fd0c0d943"

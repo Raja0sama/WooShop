@@ -6,5 +6,6 @@ import Single from './App/Single'
 import Cart from './App/Cart'
 import Checkout from './App/Checkout'
 import Cate from './App/Categories'
+import CatDetail from './App/Catedetail'
 
-export {Login,Register,Home,Detail,Single,Cart,Checkout,Cate}
+export {Login,Register,Home,Detail,Single,Cart,Checkout,Cate,CatDetail}

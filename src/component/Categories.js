@@ -1,6 +1,5 @@
-import React, { Component ,Dimensions } from "react";
-import { Text } from "react-native";
-import colors from '../colors.json'
+import React, { Component  } from "react";
+import { Text,TouchableHighlight } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 class CarC extends Component {
@@ -12,8 +11,8 @@ class CarC extends Component {
     }
    
     render(){
-      console.log()
         return (
+          <TouchableHighlight style={{flex:1}} onPress={()=> this.props.navigation.navigate('CatDetail',{data:this.props.data})}>
             <LinearGradient
             colors={[populate('#'),populate('#')]}
             style={{
@@ -35,8 +34,8 @@ class CarC extends Component {
           fontSize: 14,
           color: 'white',
           fontWeight: 'bold'
-        }}>{this.props.data.node.name}</Text>
-      </LinearGradient>
+        }}>{this.props.data.name}</Text>
+      </LinearGradient></TouchableHighlight>
         )
     }
 }

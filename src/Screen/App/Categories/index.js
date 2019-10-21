@@ -7,21 +7,30 @@ import SearchC from '../../../component/Search';
 import CarC from '../../../component/Categories';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import axios from 'axios'
+import axios from 'axios';
 const GET_CAT = `
 {
-   productCategories{
-    edges {
-      node {
-        id
-        name
-        image{
-          uri
-        }
-      }
-    }
+	productCategories{
+	  nodes{
+		id
+		name
+		image{
+		  sourceUrl
+		}
+		name
+		children{
+		  nodes{
+			id
+			name
+			image{
+		  sourceUrl
+		}
+		name
+		  }
+		}
+	  }
+	}
   }
-}
 `;
 
 class Cate extends Component {
@@ -29,28 +38,26 @@ class Cate extends Component {
 		super(props);
 		this.state = {
 			search: '',
-			cart: true,
+			cart: true
 		};
 	}
-	componentDidMount(){
-		console.log("HEY")
+	componentDidMount() {
 		axios({
 			url: 'https://eproject.tk/graphql',
 			method: 'post',
 			data: {
-			  query: GET_CAT
+				query: GET_CAT
 			}
-		  }).then((result) => {
-			this.setState({entries : result.data.data.productCategories.edges})
-		// console.log(result.data.data.productCategories.edges)  
+		}).then((result) => {
+			this.setState({ entries: result.data.data.productCategories.nodes });
+			// console.log(result.data.data.productCategories.edges);
 		});
 	}
 	updateSearch = (search) => {
 		this.setState({ search });
 	};
 	_renderItem = ({ item, index }) => {
-		console.log("Here",item)
-		return <CarC data={item} onPress={() => this.props.navigation.navigate('Details')} />;
+		return <CarC navigation={this.props.navigation} data={item} onPress={() => this.props.navigation.navigate('Details')} />;
 	};
 
 	render() {
@@ -88,7 +95,7 @@ class Cate extends Component {
 							</View>
 						</View>
 
-						<FlatList data={this.state.entries} renderItem={this._renderItem} numColumns={2} />
+						<FlatList  data={this.state.entries} renderItem={this._renderItem} numColumns={2} />
 					</View>
 				</ScrollView>
 			</View>
