@@ -1,7 +1,7 @@
 import React, { Component  } from "react";
 import { Text ,TouchableHighlight} from "react-native";
-import colors from '../colors.json'
 import LinearGradient from "react-native-linear-gradient";
+import {ThemeColor as color} from '../colors'
 
 class TCarC extends Component {
     constructor(props){
@@ -12,12 +12,11 @@ class TCarC extends Component {
    
     render(){
         const {a,Texts,width,radius} = this.props
-        console.log("I am here",this.props)
         return (
-          <TouchableHighlight style={{flex:1}} onPress={()=> this.props.navigation.navigate('CatDetail',{data:this.props.data})}>
+          <TouchableHighlight style={{flex:1,marginRight:10,marginLeft:10}} onPress={()=> this.props.navigation.navigate('CatDetail',{data:this.props.data})}>
 
             <LinearGradient
-        colors={[populate('#'),populate('#')]}
+        colors={color.BtnG}
         style={{
           height: 80, width: width, justifyContent: 'center', alignItems: 'center', borderRadius: radius, shadowColor: "#000",
           shadowOffset: {

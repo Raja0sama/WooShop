@@ -1,113 +1,91 @@
 import React from 'react'
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
-import colors from '../../../colors.json';
-import HeaderC from '../../../component/header';
-import {connect } from 'react-redux'
+import { connect } from 'react-redux'
 import GetProducts from './GraphQLComponent/Product'
-import axios from 'axios';
-import { print } from 'graphql';
-import gql from 'graphql-tag';
+import { ThemeColor as color } from '../../../colors'
+import {HeaderC} from '../../../component/index';
 
-const ADD_SKILL = gql`
-mutation addToCart( $input: AddToCartInput! ) {
-    addToCart( input: $input ) {
-        clientMutationId
-        cartItem {
-            key
-            product {
-                id
-            }
-            variation {
-                id
-            }
-            quantity
-            subtotal
-            subtotalTax
-            total
-            tax
-        }
-    }
-}
-`
 
 let total = 0
 class Cart extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
-            total : 0
+            total: 0
         }
     }
-   MakeTotal = (amount) =>{
-       total = amount
-   }
+    MakeTotal = (amount) => {
+        total = amount
+    }
 
-    render(){
-        
-        return(
-            <View style={style.ViewStyle}>
-            <HeaderC navigation={this.props.navigation} />
-            <ScrollView style={{ flex: 1 }}>
-                <Text style={{ fontSize: 32, marginLeft: 20, fontFamily: 'Montserrat-Bold', color: colors.color }}>
-                    Check Out
+    render() {
+
+        return (
+            <View style={style().ViewStyle}>
+                <View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
+                    <HeaderC navigation={this.props.navigation} />
+                </View>
+                <ScrollView style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 32, marginLeft: 20, fontFamily: 'Montserrat-Bold', color: color.PrimaryF }}>
+                        Check Out
                 </Text>
-                <GetProducts MakeTotal={this.MakeTotal}  Cart={this.props.Cart.cart} />
-            </ScrollView>
-            <View
-                style={{
-                    height: 40,
-                    backgroundColor: colors.background,
-                    borderTopRightRadius: 30,
-                    flexDirection: 'row'
-                }}
-            >
+                    <GetProducts MakeTotal={this.MakeTotal} Cart={this.props.Cart.cart} />
+                </ScrollView>
                 <View
                     style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: colors.background
-                    }}
-                >
-                    <Text style={{ color: colors.color, fontWeight: 'bold', fontSize: 20 }}>
-                        {total}
-                    </Text>
-                </View>
-                <View
-                    style={{
-                        flex: 1,
-                        backgroundColor: colors.themeC,
+                        height: 40,
+                        backgroundColor: color.Primary,
                         borderTopRightRadius: 30,
-                        borderBottomLeftRadius: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center'
+                        flexDirection: 'row'
                     }}
-                    
                 >
-                    <Text onPress={()=>this.props.navigation.navigate('Checkout')} style={{ color: 'white', fontFamily: 'Montserrat-Bold', fontSize: 15 }}>
-                        Procced to Checkout
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: color.Primary
+                        }}
+                    >
+                        <Text style={{ color: color.PrimaryF, fontWeight: 'bold', fontSize: 20 }}>
+                            {total}
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            flex: 1,
+                            backgroundColor: color.BtnG[0],
+                            borderTopRightRadius: 30,
+                            borderBottomLeftRadius: 30,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+
+                    >
+                        <Text onPress={() => this.props.navigation.navigate('Checkout')} style={{ color: 'white', fontFamily: 'Montserrat-Bold', fontSize: 15 }}>
+                            Procced to Checkout
                     </Text>
+                    </View>
                 </View>
-            </View>
-        </View>)
+            </View>)
     }
 }
-const style = StyleSheet.create({
-	ViewStyle: {
-		backgroundColor: colors.background,
-		flex: 1
-	},
-	TextStyle: {
-		color: colors.color,
-		fontSize: 30,
-		fontFamily: 'Montserrat-Bold'
-	}
+const style = () => StyleSheet.create({
+    ViewStyle: {
+        backgroundColor: color.Primary,
+        flex: 1
+    },
+    TextStyle: {
+        color: color.PrimaryF,
+        fontSize: 30,
+        fontFamily: 'Montserrat-Bold'
+    }
 });
 const mapStateToProps = (state /*, ownProps*/) => {
-	return {
-        Cart : state.Cart
-	}
+    return {
+        Cart: state.Cart
+    }
 }
 export default connect(
-	mapStateToProps  )(Cart);
+    mapStateToProps)(Cart);

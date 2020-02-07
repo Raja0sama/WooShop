@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Picker } from 'react-native';
 import { Divider  } from 'react-native-elements';
-import colors from '../../../../colors.json';
+import { ThemeColor as color } from '../../../../colors'
 
 export default class Atributes extends React.Component {
 	constructor(props) {
@@ -16,7 +16,7 @@ export default class Atributes extends React.Component {
 				{this.props.options.map((e) => e.visible ? (
                     <View><Text
 					style={{
-						color: colors.color,
+						color: color.PrimaryF,
 						fontSize: 17,
 						fontFamily: 'Montserrat-Bold'
 					}}
@@ -24,7 +24,7 @@ export default class Atributes extends React.Component {
 					Atribute Name : {e.name}
 				</Text>
 					<Text style={{
-                        color: colors.color,
+                        color: color.PrimaryF,
 						fontSize: 17,
 						fontFamily: 'Montserrat-Light'
                     }}>

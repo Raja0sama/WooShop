@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Text, TouchableHighlight } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
-import colors from '../../../colors.json';
-import HeaderC from '../../../component/header';
+import {HeaderC} from '../../../component/index';
+
 import { connect } from 'react-redux';
 import GetProduct from './GraphQLComponent/Product';
+import { ThemeColor as color } from '../../../colors'
 
 class Single extends Component {
 	constructor(props) {
@@ -13,7 +14,6 @@ class Single extends Component {
 			q: 0,
 			loading: false
 		};
-		console.log(this.props.navigation.getParam('id', null));
 	}
 	onLayout = (e) => {
 		this.setState({
@@ -22,15 +22,17 @@ class Single extends Component {
 	};
 	render() {
 		return (
-			<View style={style.ViewStyle}>
-				<HeaderC navigation={this.props.navigation} />
+			<View style={style().ViewStyle}>
+				<View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
+					<HeaderC navigation={this.props.navigation} />
+				</View>
 				<ScrollView style={{ flex: 1 }}>
 					<GetProduct query={this.props.navigation.getParam('id', null)} />
 				</ScrollView>
 				<View
 					style={{
 						height: 40,
-						backgroundColor: colors.background,
+						backgroundColor: color.Primary,
 						borderTopRightRadius: 30,
 						flexDirection: 'row'
 					}}
@@ -41,23 +43,23 @@ class Single extends Component {
 							flexDirection: 'row',
 							alignItems: 'center',
 							justifyContent: 'center',
-							backgroundColor: colors.background
+							backgroundColor: "transparent"
 						}}
 					>
 						<Icon
 							reverse
 							name="plus"
 							type="font-awesome"
-							color={colors.themeC}
+							color={color.BtnG[0]}
 							size={12}
 							onPress={() => this.setState({ q: this.state.q + 1 })}
 						/>
-						<Text style={{ color: colors.color, fontWeight: 'bold', fontSize: 20 }}>{this.state.q}</Text>
+						<Text style={{ color: color.PrimaryF, fontWeight: 'bold', fontSize: 20 }}>{this.state.q}</Text>
 						<Icon
 							reverse
 							name="minus"
 							type="font-awesome"
-							color={colors.themeC}
+							color={color.BtnG[0]}
 							size={12}
 							onPress={() => this.setState({ q: this.state.q - 1 })}
 						/>
@@ -65,7 +67,8 @@ class Single extends Component {
 					<View
 						style={{
 							flex: 1,
-							backgroundColor: colors.themeC,
+							backgroundColor: color.BtnG[0],
+							color: color.PrimaryF,
 							borderTopRightRadius: 30,
 							borderBottomLeftRadius: 30,
 							justifyContent: 'center',
@@ -74,7 +77,7 @@ class Single extends Component {
 					>
 						<Button
 							loading={this.state.loading}
-							buttonStyle={{ flex: 1, backgroundColor: colors.themeC }}
+							buttonStyle={{ flex: 1, backgroundColor: "transparent" }}
 							title={'ADD to Cart'}
 							onPress={() => {
 								this.setState({ loading: true });
@@ -101,19 +104,18 @@ class Single extends Component {
 		);
 	}
 }
-const style = StyleSheet.create({
+const style = () => StyleSheet.create({
 	ViewStyle: {
-		backgroundColor: colors.background,
+		backgroundColor: color.Primary,
 		flex: 1
 	},
 	TextStyle: {
-		color: colors.color,
+		color: color.PrimaryF,
 		fontSize: 30,
 		fontFamily: 'Montserrat-Bold'
 	}
 });
 const mapStateToProps = (state /*, ownProps*/) => {
-	console.log(state);
 	return {};
 };
 export default connect(mapStateToProps)(Single);

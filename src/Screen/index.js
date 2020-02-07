@@ -7,5 +7,7 @@ import Cart from './App/Cart'
 import Checkout from './App/Checkout'
 import Cate from './App/Categories'
 import CatDetail from './App/Catedetail'
+import Settings from './App/Setting'
+import Search from './App/Search'
 
-export {Login,Register,Home,Detail,Single,Cart,Checkout,Cate,CatDetail}
+export {Login,Register,Home,Detail,Single,Cart,Checkout,Cate,CatDetail,Settings,Search}

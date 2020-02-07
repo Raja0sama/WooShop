@@ -41,8 +41,6 @@ function Cart(state = { cart : [],total : 0 }, action) {
         cart : a
       }
     case CART_DELETE:
-      console.log("Action index",action.product)
-      console.log("State ",state)
        state.cart.splice(action.product, 1)
       return {
         ...state

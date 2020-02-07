@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { View,  Text} from "react-native";
 import { Avatar } from "react-native-elements";
-import colors from '../colors.json'
 
 
 
@@ -13,13 +12,13 @@ const WelcomeC = ({navigation,user}) => {
 
           <View style={{ flex: 1, height: 100 }} >
             <Text style={{
-              color: colors.color,
+              color: color.PrimaryF,
               fontSize: 22,
               top: 8,
               fontFamily: "Montserrat-Light"
             }}>Welcome 🤘, </Text>
             <Text style={{
-              color: colors.color,
+              color: color.PrimaryF,
 
               fontSize: 25,
               fontFamily: 'Montserrat-Bold'

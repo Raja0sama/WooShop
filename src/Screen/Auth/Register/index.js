@@ -1,30 +1,22 @@
 import React, { Component } from 'react';
 import { View, StatusBar, Text,  StyleSheet } from 'react-native';
 import { Input } from 'react-native-elements';
-import colors from '../../../colors.json';
 import GButton from '../../../component/GButton';
 import ButtonC from '../../../component/Button';
-import { gql } from "apollo-boost";
 import { Mutation } from 'react-apollo';
+import {ThemeColor as color } from '../../../colors'
 import Toast from 'react-native-simple-toast';
-const Reg = gql`
-mutation REGISTER_USER($input: RegisterUserInput!) {
-	registerUser(input: $input) {
-	  user {
-		id
-		name
-	  }
-	}
-  }
-`;
+import {register} from '../../../Graphql/Actions/index'
+
+
 class Register extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			email: '',
 			username: '',
-			emailcolor: colors.background,
-			passwordcolor: colors.background,
+			emailcolor: color.Primary,
+			passwordcolor: color.Primary,
 			checked: false,
 			ll:false
 		};
@@ -41,7 +33,6 @@ class Register extends Component {
           }
         })
 		  .then(res => {
-			  console.log(res)
 			this.setState({ll:false})
 			Toast.show("An Email has been send to you");
 
@@ -58,12 +49,12 @@ class Register extends Component {
 }
 	render() {
 		return (
-			<View style={style.ViewStyle}>
-				<StatusBar backgroundColor={colors.background} barStyle={colors.stutsbarContent} />
+			<View style={style().ViewStyle}>
+				<StatusBar backgroundColor={color.Primary} barStyle={color.stutsbarContent} />
 
 				<Text style={style.TextStyle}>REGISTER NOW , </Text>
 				<Text style={style.subTextStyle}>Register to create an account</Text>
-				<Mutation mutation={Reg} >
+				<Mutation mutation={register} >
 				 {(registerUser, { data }) => (
 				<View style={style.inputContainer}>
 					<Input
@@ -75,7 +66,7 @@ class Register extends Component {
 							color: this.state.emailcolor,
 							size: 15
 						}}
-						placeholderTextColor={colors.color}
+						placeholderTextColor={color.PrimaryF}
 						onChangeText={(e)=> this.setState({username:e})}
 
 					/>
@@ -88,7 +79,7 @@ class Register extends Component {
 							color: this.state.emailcolor,
 							size: 15
 						}}
-						placeholderTextColor={colors.color}
+						placeholderTextColor={color.PrimaryF}
 						onChangeText={(e)=> this.setState({email:e})}
 
 					/>
@@ -100,27 +91,27 @@ class Register extends Component {
 		);
 	}
 }
-const style = StyleSheet.create({
+const style = () => StyleSheet.create({
 	ViewStyle: {
-		backgroundColor: colors.background,
+		backgroundColor: color.Primary,
 		flex: 1,
 		padding: 30
 	},
 	TextStyle: {
-		color: colors.color,
+		color: color.PrimaryF,
 		marginTop: 20,
 		fontSize: 30,
 		fontFamily: 'Montserrat-Bold'
 	},
 	subTextStyle: {
-		color: colors.color,
+		color: color.PrimaryF,
 		top: -8,
 		fontSize: 20,
 		fontFamily: 'Montserrat-Light'
 	},
 	inputStyle: {
 		fontSize: 15,
-		color: colors.color,
+		color: color.PrimaryF,
 		fontFamily: 'Montserrat-Light'
 	},
 	inputContainer: {

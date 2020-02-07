@@ -1,76 +1,105 @@
 // In App.js in a new project
 
-
 import React from 'react';
-import {
-  ActivityIndicator,
-  StatusBar,
-  View,
-} from 'react-native';
+import { ActivityIndicator, StatusBar, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { connect } from 'react-redux'
-import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
-import {Login,Register,Home,Detail,Single,Cart,Checkout,Cate,CatDetail} from '../Screen/index'
+import { connect } from 'react-redux';
+import {
+	createSwitchNavigator,
+	createAppContainer
+} from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import SideMenu from './sidemenu';
+
+import { Login, Register, Home, Detail, Single, Cart, Checkout, Cate, CatDetail,Settings,Search } from '../Screen/index';
+
+// This is the AuthStack, all the authentication or Registeration routes should be mentioned in auth Stacktrace
 
 
-const AuthStack = createStackNavigator({
-  Login,Register
-},{
-  headerMode: 'none',
-  navigationOptions: {
-      headerVisible: false,
-  }
-});
+const AuthStack = createStackNavigator(
+	{
+		Login,
+		Register
+	},
+	{
+		headerMode: 'none',
+		navigationOptions: {
+			headerVisible: false
+		}
+	}
+);
 
-const AppStack = createStackNavigator({
-  Home,Detail,Single,Cart,Checkout,Cate,CatDetail
-}, {
-    headerMode: 'none',
-    navigationOptions: {
-      headerVisible: false,
-    }
-  });
+// App Stack Carrys all the route for the normal Logged in Screeens
 
+const AppStack = createStackNavigator(
+	{
+		Home,
+		Detail,
+		Single,
+		Cart,
+		Checkout,
+		Cate,Search,
+		CatDetail,Settings
+	},
+	{
+		headerMode: 'none',
+		navigationOptions: {
+			headerVisible: false
+		},
+		
+	}
+);
 
-///
+// Drawer //
+const MainNavigator = createDrawerNavigator({
+	MainStack: {
+	  screen: AppStack,
+	},
+  }, {
+	contentComponent: SideMenu,
+	  drawerWidth: 300
+	});
+  
+
+// This routes verify if the person is logged in or not
 
 class AuthLoadingScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this._bootstrapAsync();
-  }
+	constructor(props) {
+		super(props);
+		this._bootstrapAsync();
+	}
 
-  // Fetch the token from storage then navigate to our appropriate place
-  _bootstrapAsync = async () => {
-    const userToken = await AsyncStorage.getItem('userToken');
-	  this.props.dispatch({type:'LOGINUSER',user:JSON.parse(userToken)})
+	_bootstrapAsync = async () => {
+		const userToken = await AsyncStorage.getItem('userToken');
+		this.props.dispatch({ type: 'LOGINUSER', user: JSON.parse(userToken) });
+		this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+	};
 
-    // This will switch to the App screen or Auth screen and this loading
-    // screen will be unmounted and thrown away.
-    this.props.navigation.navigate(userToken ? 'App' : 'Auth');
-  };
-
-  // Render any loading content that you like here
-  render() {
-    return (
-      <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-        <ActivityIndicator></ActivityIndicator>
-        <StatusBar barStyle="default" />
-      </View>
-    );
-  }
+	// Render any loading content that you like here
+	render() {
+		return (
+			<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+				<ActivityIndicator />
+				<StatusBar barStyle="default" />
+			</View>
+		);
+	}
 }
-AuthLoadingScreen = connect(null,null)(AuthLoadingScreen)
-///
+AuthLoadingScreen = connect(null, null)(AuthLoadingScreen);
 
 
-export default createAppContainer(createSwitchNavigator(
-  {
-    AuthLoading: AuthLoadingScreen,
-    App: AppStack,
-    Auth: AuthStack,
-  },
-  {
-    initialRouteName: 'AuthLoading',
-  }
-));
+// Routes Handler
+
+export default createAppContainer(
+	createSwitchNavigator(
+		{
+			AuthLoading: AuthLoadingScreen,
+			App: MainNavigator,
+			Auth: AuthStack
+		},
+		{
+			initialRouteName: 'AuthLoading'
+		}
+	)
+);

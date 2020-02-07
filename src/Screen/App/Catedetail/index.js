@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet, Dimensions, ScrollView, FlatList, Text, Animated } from 'react-native';
-import {} from 'react-native-elements';
-import colors from '../../../colors.json';
-import HeaderC from '../../../component/header';
-import SearchC from '../../../component/Search';
-import CarC from '../../../component/ICard';
+import { } from 'react-native-elements';
+
 import GetProducts from './GraphQLComponent/Product';
-function Item(data, index,state) {
+import {ThemeColor as color } from '../../../colors'
+import {HeaderC,SearchC,ICard} from '../../../component/index';
+
+function Item(data, index, state) {
 
 	const datas = data.data;
 	return (
-		<TouchableOpacity onPress={() => data.update(data.data.text,data.index)} key={index}>
+		<TouchableOpacity onPress={() => data.update(data.data.text, data.index)} key={index}>
 			<View
 				style={{
 					backgroundColor: datas.backgroundColor,
@@ -40,44 +40,7 @@ function Item(data, index,state) {
 		</TouchableOpacity>
 	);
 }
-const DATA = [
-	{
-		text: 'England',
-		textColor: colors.rcolor,
-		backgroundColor: colors.themeC,
-		borderColor: colors.rcolor
-	},
-	{
-		text: 'Australia',
-		textColor: colors.themeC,
-		backgroundColor: colors.rcolor,
-		borderColor: colors.themeC
-	},
-	{
-		text: 'Indonesian',
-		textColor: colors.themeC,
-		backgroundColor: colors.rcolor,
-		borderColor: colors.themeC
-	},
-	{
-		text: 'USA',
-		textColor: colors.themeC,
-		backgroundColor: colors.rcolor,
-		borderColor: colors.themeC
-	},
-	{
-		text: 'Canada',
-		textColor: colors.themeC,
-		backgroundColor: colors.rcolor,
-		borderColor: colors.themeC
-	},
-	{
-		text: 'Spain',
-		textColor: colors.themeC,
-		backgroundColor: colors.rcolor,
-		borderColor: colors.themeC
-	}
-];
+
 
 class CatDetail extends Component {
 	constructor(props) {
@@ -85,80 +48,80 @@ class CatDetail extends Component {
 		this.state = {
 			search: '',
 			cart: true,
-			entries: [ 1, 2, 3, 4, 5, 6, 7 ],
-			data:this.props.navigation.getParam('data', null)
+			entries: [1, 2, 3, 4, 5, 6, 7],
+			data: this.props.navigation.getParam('data', null)
 		};
 		// this.setState({data:this.props.navigation.getParam('data', null)});
 	}
-	componentDidMount(){
+	componentDidMount() {
 		const cate = []
-		
-		this.state.data.children.nodes.forEach((e,i)=>{
-			if(i == 0){
-				this.setState({where: e.name})
+
+		this.state.data.children.nodes.forEach((e, i) => {
+			if (i == 0) {
+				this.setState({ where: e.name })
 				cate.push({
 					text: e.name,
-					textColor: colors.rcolor,
-					backgroundColor: colors.themeC,
-					borderColor: colors.rcolor
+					textColor: color.SecondaryF,
+					backgroundColor: color.BtnG[0],
+					borderColor: color.SecondaryF
 				})
-			}else{
+			} else {
 				cate.push({
 					text: e.name,
-					textColor: colors.themeC,
-					backgroundColor: colors.rcolor,
-					borderColor: colors.themeC
+					textColor: color.BtnG[0],
+					backgroundColor: color.SecondaryF,
+					borderColor: color.BtnG[0]
 				})
 			}
-	
+
 		})
-		this.setState({cate})
+		this.setState({ cate })
 	}
 	updateSearch = (search) => {
 		this.setState({ search });
 	};
 	_renderItem({ item, index }) {
-		return <CarC key={Math.random()} data={{ item, index }} />;
+		return <ICard key={Math.random()} data={{ item, index }} />;
 	}
-	update = (name,index)=> {
-		console.log(index)
-		this.setState({where: name})
+	update = (name, index) => {
+		this.setState({ where: name })
 		const cate = []
-		
-		this.state.data.children.nodes.forEach((e,i)=>{
-			if(i == index){
-				this.setState({where: e.name})
+
+		this.state.data.children.nodes.forEach((e, i) => {
+			if (i == index) {
+				this.setState({ where: e.name })
 				cate.push({
 					text: e.name,
-					textColor: colors.rcolor,
-					backgroundColor: colors.themeC,
-					borderColor: colors.rcolor
+					textColor: color.SecondaryF,
+					backgroundColor: color.BtnG[0],
+					borderColor: color.SecondaryF
 				})
-			}else{
+			} else {
 				cate.push({
 					text: e.name,
-					textColor: colors.themeC,
-					backgroundColor: colors.rcolor,
-					borderColor: colors.themeC
+					textColor: color.BtnG[0],
+					backgroundColor: color.SecondaryF,
+					borderColor: color.BtnG[0]
 				})
 			}
-	
+
 		})
-		this.setState({cate})
+		this.setState({ cate })
 	}
 
 	render() {
-		console.log(this.state);
 		return (
-			<View style={style.ViewStyle}>
-				<HeaderC heading={'Products'} navigation={this.props.navigation} />
-				<ScrollView style={{ flex: 1 }}>
+			<View style={style().ViewStyle}>
+				<View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
+					<HeaderC navigation={this.props.navigation} />
 					<SearchC />
+				</View>
+				<ScrollView style={{ flex: 1 }}>
 					<FlatList
 						style={{ marginTop: 10 }}
 						horizontal={true}
 						data={this.state.cate}
-						renderItem={({ item , index}) => <Item index={index} update={this.update} data={item} />}
+						renderItem={({ item, index }) => <Item index={index} update={this.update} data={item} />}
 						keyExtractor={(item) => item.id}
 						showsHorizontalScrollIndicator={false}
 					/>
@@ -169,9 +132,9 @@ class CatDetail extends Component {
 		);
 	}
 }
-const style = StyleSheet.create({
+const style = () => StyleSheet.create({
 	ViewStyle: {
-		backgroundColor: colors.background,
+		backgroundColor: color.Primary,
 		flex: 1
 	}
 });

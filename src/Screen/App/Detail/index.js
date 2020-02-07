@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, ScrollView, FlatList, Text, Animated } from 'react-native';
-import { } from 'react-native-elements';
-import colors from '../../../colors.json';
-import HeaderC from '../../../component/header';
-import SearchC from '../../../component/Search';
-import CarC from '../../../component/ICard';
+import {HeaderC,SearchC,ICard} from '../../../component/index';
 import GetProducts from './GraphQLComponent/Product.js'
+import { ThemeColor as color } from '../../../colors'
 
 class Detail extends Component {
 	constructor(props) {
@@ -20,16 +17,17 @@ class Detail extends Component {
 		this.setState({ search });
 	};
 	_renderItem({ item, index }) {
-		return <CarC data={{ item, index }} />;
+		return <ICard data={{ item, index }} />;
 	}
 
 	render() {
-		console.log(this.state)
 		return (
-			<View style={style.ViewStyle}>
-				<HeaderC heading={"Products"} navigation={this.props.navigation} />
-				<ScrollView style={{ flex: 1 }}>
+			<View style={style().ViewStyle}>
+				<View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
+					<HeaderC heading={"Products"} navigation={this.props.navigation} />
 					<SearchC />
+				</View>
+				<ScrollView style={{ flex: 1 }}>
 
 
 					<GetProducts orderby={this.props.navigation.getParam('orderby', 0)} render={this._renderItem} />
@@ -41,9 +39,9 @@ class Detail extends Component {
 		);
 	}
 }
-const style = StyleSheet.create({
+const style = () => StyleSheet.create({
 	ViewStyle: {
-		backgroundColor: colors.background,
+		backgroundColor: color.Primary,
 		flex: 1
 	}
 });

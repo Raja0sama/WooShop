@@ -1,34 +1,15 @@
-import CarC from '../../../../component/ICard';
-import React, { Component } from 'react';
+import React, {  } from 'react';
 import { View,Dimensions,FlatList,Text,Animated,ActivityIndicator } from 'react-native';
-import colors from '../../../../colors.json';
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { ThemeColor as color } from '../../../../colors'
+import {productsSorted} from '../../../../Graphql/Actions/index'
 
-const GET_PRODUCTS = (orderby) =>gql`
-{
-  products(first: 200, where:{orderby:${orderby}}){
-    nodes {
-      id
-      productId
-      name
-      description
-      price
-      image{
-        sourceUrl
-      }
 
-    }
-  }
-}
-`;
 const GetProducts = (props) =>{
-  var { height, width } = Dimensions.get('window');
   const dataa = OrderBY(props.orderby)
-	const { data, loading, error } = useQuery(GET_PRODUCTS(dataa.filter));
-	if (loading) return <ActivityIndicator size="large" color={colors.color} />;
+	const { data, loading, error } = useQuery(productsSorted(dataa.filter));
+	if (loading) return <ActivityIndicator size="large" color={color.PrimaryF} />;
 	if (error) return <Text>ERROR</Text>;
-  console.log(props)
 	return (
     <View style={{marginLeft:15,marginRight:15,marginTop:10}}>
 
@@ -36,7 +17,7 @@ const GetProducts = (props) =>{
         <View style={{ flex: 1 }}>
           <Text
             style={{
-              color: colors.color,
+              color: color.PrimaryF,
               fontSize: 18,
               fontFamily: 'Montserrat-SemiBold'
             }}
@@ -48,7 +29,7 @@ const GetProducts = (props) =>{
         <View style={{ flexDirection: 'row-reverse' }}>
           <Text
             style={{
-              color: colors.themeC,
+              color: color.BtnG[0],
               fontSize: 13,
               fontFamily: 'Montserrat-SemiBold'
             }}
