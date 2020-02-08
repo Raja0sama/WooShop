@@ -114,14 +114,7 @@ class Checkout extends React.Component {
 							<DoMutation mutate={mutate} />
 							{error && (<DoRedirect navigation={this.props.navigation} error={error} />)}
 							{data && (<RefreshToken navigation={this.props.navigation} data={data} />)}
-							{/* {console.log(data)} */}
-
-						</React.Fragment>
-					)}
-
-				</Mutation>
-
-				<ScrollView>
+							<ScrollView>
 					<Mutation
 						context={{
 							headers: {
@@ -228,6 +221,13 @@ class Checkout extends React.Component {
 						)}
 					</Mutation>
 				</ScrollView>
+
+						</React.Fragment>
+					)}
+
+				</Mutation>
+
+			
 			
 				
 

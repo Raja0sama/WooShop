@@ -34,12 +34,17 @@ class Home extends Component {
 	_renderItem1({ item, index }) {
 		return <ICard data={{ item, index }} />;
 	}
-
+	 style =  StyleSheet.create({
+		ViewStyle: {
+			backgroundColor: color.Primary,
+			flex: 1
+		}
+	});
 
 	render() {
 		var { height, width } = Dimensions.get('window');
 		return (
-			<View style={style().ViewStyle}>
+			<View style={this.style.ViewStyle}>
 				<View style={{backgroundColor:color.Primary,paddingBottom:20}} >
 					<HeaderC navigation={this.props.navigation} />
 					<SearchC  />
@@ -99,12 +104,7 @@ class Home extends Component {
 		);
 	}
 }
-const style = () => StyleSheet.create({
-	ViewStyle: {
-		backgroundColor: color.Primary,
-		flex: 1
-	}
-});
+
 const mapStateToProps = (state /*, ownProps*/) => {
 	return {
 		state: state

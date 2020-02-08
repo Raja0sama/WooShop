@@ -19,10 +19,15 @@ class Detail extends Component {
 	_renderItem({ item, index }) {
 		return <ICard data={{ item, index }} />;
 	}
-
+	style =  StyleSheet.create({
+		ViewStyle: {
+			backgroundColor: color.Primary,
+			flex: 1
+		}
+	});
 	render() {
 		return (
-			<View style={style().ViewStyle}>
+			<View style={this.style.ViewStyle}>
 				<View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
 					<HeaderC heading={"Products"} navigation={this.props.navigation} />
 					<SearchC />
@@ -39,10 +44,4 @@ class Detail extends Component {
 		);
 	}
 }
-const style = () => StyleSheet.create({
-	ViewStyle: {
-		backgroundColor: color.Primary,
-		flex: 1
-	}
-});
 export default Detail;

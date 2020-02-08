@@ -20,9 +20,20 @@ class Single extends Component {
 			width: e.nativeEvent.layout.width
 		});
 	};
+	style =  StyleSheet.create({
+		ViewStyle: {
+			backgroundColor: color.Primary,
+			flex: 1
+		},
+		TextStyle: {
+			color: color.PrimaryF,
+			fontSize: 30,
+			fontFamily: 'Montserrat-Bold'
+		}
+	});
 	render() {
 		return (
-			<View style={style().ViewStyle}>
+			<View style={this.style.ViewStyle}>
 				<View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
 					<HeaderC navigation={this.props.navigation} />
 				</View>
@@ -104,17 +115,6 @@ class Single extends Component {
 		);
 	}
 }
-const style = () => StyleSheet.create({
-	ViewStyle: {
-		backgroundColor: color.Primary,
-		flex: 1
-	},
-	TextStyle: {
-		color: color.PrimaryF,
-		fontSize: 30,
-		fontFamily: 'Montserrat-Bold'
-	}
-});
 const mapStateToProps = (state /*, ownProps*/) => {
 	return {};
 };

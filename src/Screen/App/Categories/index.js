@@ -35,10 +35,15 @@ class Cate extends Component {
 	_renderItem = ({ item, index }) => {
 		return <CarC navigation={this.props.navigation} data={item} onPress={() => this.props.navigation.navigate('Details')} />;
 	};
-
+	style =  StyleSheet.create({
+		ViewStyle: {
+			backgroundColor: color.Primary,
+			flex: 1
+		}
+	});
 	render() {
 		return (
-			<View style={style().ViewStyle}>
+			<View style={this.style.ViewStyle}>
 				<View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
 					<HeaderC navigation={this.props.navigation} />
 					<SearchC />
@@ -79,10 +84,4 @@ class Cate extends Component {
 		);
 	}
 }
-const style = () => StyleSheet.create({
-	ViewStyle: {
-		backgroundColor: color.Primary,
-		flex: 1
-	}
-});
 export default Cate;

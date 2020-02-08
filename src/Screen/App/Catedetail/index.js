@@ -108,10 +108,15 @@ class CatDetail extends Component {
 		})
 		this.setState({ cate })
 	}
-
+	style =  StyleSheet.create({
+		ViewStyle: {
+			backgroundColor: color.Primary,
+			flex: 1
+		}
+	});
 	render() {
 		return (
-			<View style={style().ViewStyle}>
+			<View style={this.style.ViewStyle}>
 				<View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
 					<HeaderC navigation={this.props.navigation} />
 					<SearchC />
@@ -132,26 +137,8 @@ class CatDetail extends Component {
 		);
 	}
 }
-const style = () => StyleSheet.create({
-	ViewStyle: {
-		backgroundColor: color.Primary,
-		flex: 1
-	}
-});
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
-	item: {
-		backgroundColor: '#f9c2ff',
-		padding: 20,
-		marginVertical: 8,
-		marginHorizontal: 16
-	},
-	title: {
-		fontSize: 32
-	}
-});
+
+
 
 export default CatDetail;

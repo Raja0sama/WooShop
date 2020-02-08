@@ -49,7 +49,7 @@ class Register extends Component {
 }
 	render() {
 		return (
-			<View style={style().ViewStyle}>
+			<View style={style.ViewStyle}>
 				<StatusBar backgroundColor={color.Primary} barStyle={color.stutsbarContent} />
 
 				<Text style={style.TextStyle}>REGISTER NOW , </Text>
@@ -91,7 +91,7 @@ class Register extends Component {
 		);
 	}
 }
-const style = () => StyleSheet.create({
+const style =  StyleSheet.create({
 	ViewStyle: {
 		backgroundColor: color.Primary,
 		flex: 1,

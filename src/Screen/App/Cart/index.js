@@ -17,11 +17,21 @@ class Cart extends React.Component {
     MakeTotal = (amount) => {
         total = amount
     }
-
+    style =  StyleSheet.create({
+        ViewStyle: {
+            backgroundColor: color.Primary,
+            flex: 1
+        },
+        TextStyle: {
+            color: color.PrimaryF,
+            fontSize: 30,
+            fontFamily: 'Montserrat-Bold'
+        }
+    });
     render() {
 
         return (
-            <View style={style().ViewStyle}>
+            <View style={this.style.ViewStyle}>
                 <View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
                     <HeaderC navigation={this.props.navigation} />
                 </View>
@@ -71,17 +81,7 @@ class Cart extends React.Component {
             </View>)
     }
 }
-const style = () => StyleSheet.create({
-    ViewStyle: {
-        backgroundColor: color.Primary,
-        flex: 1
-    },
-    TextStyle: {
-        color: color.PrimaryF,
-        fontSize: 30,
-        fontFamily: 'Montserrat-Bold'
-    }
-});
+
 const mapStateToProps = (state /*, ownProps*/) => {
     return {
         Cart: state.Cart

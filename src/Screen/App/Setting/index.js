@@ -17,7 +17,7 @@ class Settings extends Component {
     componentDidMount() {
         AsyncStorage.getItem("@theme").then(res => {
             console.log(res)
-            this.setState({ dark: res == "dark" ? true : false })
+            this.setState({ dark: res == "Dark" ? true : false })
         })
     }
     render() {
@@ -43,12 +43,10 @@ class Settings extends Component {
                             if (this.state.dark) {
                                 AsyncStorage.setItem('@theme', 'Light')
 
-
                             } else {
                                 AsyncStorage.setItem('@theme', 'Dark')
-
                             }
-                            this.setState({ dark: !this.state.dark })
+                            // this.setState({ dark: !this.state.dark })
                             RNRestart.Restart();
 
 

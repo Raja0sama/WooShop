@@ -23,11 +23,15 @@ class Search extends Component {
 		console.log(input)
 		this.setState({search:input})
 	}
-
+	style =  StyleSheet.create({
+		ViewStyle: {
+			backgroundColor: color.Primary,
+			flex: 1
+		}
+	});
 	render() {
-		console.log(this.state)
 		return (
-			<View style={style().ViewStyle}>
+			<View style={this.style.ViewStyle}>
 				<View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
 					<HeaderC navigation={this.props.navigation} />
 					<SearchC return={this.getInput} self={true} />
@@ -37,12 +41,6 @@ class Search extends Component {
 		);
 	}
 }
-const style = () => StyleSheet.create({
-	ViewStyle: {
-		backgroundColor: color.Primary,
-		flex: 1
-	}
-});
 const mapStateToProps = (state /*, ownProps*/) => {
 	return {
 		state: state

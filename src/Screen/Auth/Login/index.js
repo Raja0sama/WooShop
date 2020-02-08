@@ -48,7 +48,7 @@ class Login extends Component {
 
 	render() {
 		return (
-			<View style={style().ViewStyle}>
+			<View style={style.ViewStyle}>
 				<StatusBar backgroundColor={color.Primary} barStyle={color.stutsbarContent} />
 
 				<Text style={style.TextStyle}>WELCOME ,</Text>
@@ -66,13 +66,19 @@ class Login extends Component {
 									color: this.state.emailcolor,
 									size: 15
 								}}
+								autoCapitalize = 'none'
 								onChangeText={(e) => this.setState({ username: e })}
 								placeholderTextColor={color.PrimaryF}
+								returnKeyType = { "next" }
+								onSubmitEditing={() => { this.secondTextInput.focus(); }}
+								blurOnSubmit={false}
 							/>
 							<Input
 								inputStyle={style.inputStyle}
+								ref={(input) => { this.secondTextInput = input; }}
 								placeholder="Password"
 								secureTextEntry={true}
+								autoCapitalize = 'none'
 								rightIcon={{
 									type: 'font-awesome',
 									name: 'check',
@@ -81,6 +87,7 @@ class Login extends Component {
 								}}
 								onChangeText={(e) => this.setState({ password: e })}
 								placeholderTextColor={color.PrimaryF}
+								onSubmitEditing={() => this.LoginNow(login)}
 							/>
 
 							<GButton loading={this.state.ll} Text={'LOGIN'} onPress={() => this.LoginNow(login)} />
@@ -93,7 +100,7 @@ class Login extends Component {
 		);
 	}
 }
-const style = () => StyleSheet.create({
+const style =  StyleSheet.create({
 	ViewStyle: {
 		backgroundColor: color.Primary,
 		flex: 1,

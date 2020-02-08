@@ -16,7 +16,22 @@ const setGal = (p) => {
 let a = '';
 const GetProduct = (props) => {
 	var { height, width } = Dimensions.get('window');
-
+	const style = StyleSheet.create({
+		ViewStyle: {
+			backgroundColor: color.Primary,
+			flex: 1
+		},
+		TextStyle: {
+			color: color.PrimaryF,
+			fontSize: 30,
+			fontFamily: 'Montserrat-Bold'
+		},
+		CStyle: {
+			color: color.PrimaryF,
+			fontSize: 17,
+			fontFamily: 'Montserrat-Bold'
+		}
+	});
 	const { data, loading, error } = useQuery(singleProduct(props.query));
 	if (loading) return <ActivityIndicator size="large" color={color.PrimaryF} />;
 	if (error) return <Text>ERROR</Text>;
@@ -78,22 +93,7 @@ const GetProduct = (props) => {
 	);
 };
 
-const style = () => StyleSheet.create({
-	ViewStyle: {
-		backgroundColor: color.Primary,
-		flex: 1
-	},
-	TextStyle: {
-		color: color.PrimaryF,
-		fontSize: 30,
-		fontFamily: 'Montserrat-Bold'
-	},
-	CStyle: {
-		color: color.PrimaryF,
-		fontSize: 17,
-		fontFamily: 'Montserrat-Bold'
-	}
-});
+
 const onLayout = (e) => {
 	a = {
 		width: e.nativeEvent.layout.width
