@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Dimensions, FlatList, View, Text } from 'react-native';
+import { Dimensions, FlatList, View } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { ThemeColor as color } from '../../../../colors'
 import {productsSorted} from '../../../../Graphql/Actions/index'
-
+import {Text } from "@ui-kitten/components"
 
 const GetPop = (props) => {
 
@@ -13,14 +12,13 @@ const GetPop = (props) => {
   if (loading) return <View />
   if (error) return <Text>ERROR</Text>;
   return (
-    <View>
+    <View style={{marginVertical:20}}>
       <View style={{ flexDirection: 'row' }}>
         <View style={{ flex: 1 }}>
           <Text
             style={{
               marginLeft:20,
              
-              color: color.PrimaryF,
               fontSize: 18,
               fontFamily: 'Montserrat-SemiBold'
             }}
@@ -33,7 +31,6 @@ const GetPop = (props) => {
           <Text
             style={{
               marginRight:20,
-              color: color.PrimaryF,
               fontSize: 13,
               fontFamily: 'Montserrat-SemiBold'
             }}

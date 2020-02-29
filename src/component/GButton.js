@@ -1,26 +1,31 @@
 import React, { Component } from "react";
-import {Button} from "react-native-elements"
-import LinearGradient from "react-native-linear-gradient";
-import { ThemeColor as color } from '../colors'
+import {
+  Button,Icon
+} from '@ui-kitten/components';
+import { Spinner } from '@ui-kitten/components';
+
 
 const GButton = ({onPress,Text,loading}) => {
+
+  const spinnerIcon = (style) => (
+    <Icon
+      {...style}
+      name={'loader-outline'}
+    />
+  );
     return (
         <Button
             onPress={onPress}
-            ViewComponent={LinearGradient} // Don't forget this!
-            titleStyle={{fontFamily:'Montserrat-SemiBold',color:'white'  }}
-            buttonStyle={{ borderRadius: 30, }}
-            containerStyle={{marginTop:20}}
+            style={{marginTop:20}}
             rounded={true}
-            linearGradientProps={{
-              // colors:[color.PDark,color.Primary],
-              colors:color.BtnG,
-              start: { x: 1, y: 2 },
-              end: { x: 0.1, y: 0.2 }
-            }}
+            icon={loading && spinnerIcon}
             title={Text}
             loading={loading}
-          />
+            
+          >
+           
+            {loading ? ( <Spinner/>) :  Text}
+          </Button>
     )
 }
 export default GButton

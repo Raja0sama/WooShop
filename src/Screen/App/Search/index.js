@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { HeaderC, SearchC } from '../../../component/index';
 import SearchQuery from './GraphqlComponent/search'
 import { connect } from 'react-redux'
-import { ThemeColor as color } from '../../../colors'
+import { Layout } from '@ui-kitten/components';
 
 class Search extends Component {
 	constructor(props) {
@@ -16,28 +16,27 @@ class Search extends Component {
 		
 	}
 	componentDidMount(){
-		this.setState({search:this.props.navigation.getParam('input', "")})
+		this.setState({search:this.props.route.params?.input ?? ""})
 
 	}
 	getInput = (input) =>{
-		console.log(input)
+		
 		this.setState({search:input})
 	}
 	style =  StyleSheet.create({
 		ViewStyle: {
-			backgroundColor: color.Primary,
 			flex: 1
 		}
 	});
 	render() {
 		return (
-			<View style={this.style.ViewStyle}>
-				<View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
+			<Layout style={this.style.ViewStyle}>
+				<View style={{ backgroundColor: "transparent", paddingBottom: 20 }} >
 					<HeaderC navigation={this.props.navigation} />
 					<SearchC return={this.getInput} self={true} />
 				</View>
 				{this.state.search && <SearchQuery input={this.state.search} />}
-			</View>
+			</Layout>
 		);
 	}
 }

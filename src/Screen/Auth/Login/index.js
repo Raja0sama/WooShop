@@ -1,126 +1,131 @@
-import React, { Component } from 'react';
-import { View, StatusBar, Text, StyleSheet } from 'react-native';
-import { Input } from 'react-native-elements';
+import React, { useState } from 'react';
+import { View, StatusBar, StyleSheet, Image } from 'react-native';
 import GButton from '../../../component/GButton';
 import ButtonC from '../../../component/Button';
 import { Mutation } from 'react-apollo';
-import {ThemeColor as color } from '../../../colors'
 import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import { login } from '../../../Graphql/Actions/index'
+import { ThemeContext } from '../../../theme-context';
+import { useNavigation } from '@react-navigation/native';
+import {
+	Layout, Text, Input, Icon
+} from '@ui-kitten/components';
+import { useDispatch } from 'react-redux'
+import SimpleToast from 'react-native-simple-toast';
 
-class Login extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			emailcolor: color.Primary,
-			passwordcolor: color.Primary,
-			checked: false,
-			username: '',
-			password: '',
-			ll: false
-		};
-	}
-	componentDidMount() {
-		
-	}
-	LoginNow(login) {
-		this.setState({ ll: true });
+
+
+const Login = () => {
+	const navigation = useNavigation();
+	const dispatch = useDispatch()
+
+
+	const [username, setusername] = useState('');
+	const [password, setpassword] = useState('');
+	const [error, seterror] = useState('');
+	const [loading, setloading] = useState(false);
+	const [secureTextEntry, setSecureTextEntry] = React.useState(true);
+
+	const Login = (login) => {
+		setloading(true);
 		login({
 			variables: {
-				username: this.state.username,
-				password: this.state.password
+				username: username,
+				password: password
 			}
 		})
 			.then((res) => {
-				this.setState({ ll: false });
+				setloading(false);
 				AsyncStorage.setItem('userToken', JSON.stringify(res.data.login));
-				this.props.dispatch({ type: 'LOGINUSER', user: res.data.login });
-				this.props.navigation.navigate('App');
+				dispatch({ type: 'LOGINUSER', user: res.data.login });
+				// navigation.navigate('App');
 			})
 			.catch((err) => {
-				
-				console.warn(err);
-				// Toast.show(err.graphQLErrors[0].message);
-				this.setState({ ll: false });
+				var a = err.graphQLErrors[0].message
+				var n = a.indexOf(";:");
+				SimpleToast.show(a.substring(n + 3));
+				seterror(a.substring(n + 1))
+				setloading(false);
 			});
 	}
+	const onIconPress = () => {
+		setSecureTextEntry(!secureTextEntry);
+	};
+	const renderIcon = (style) => (
+		<Icon {...style} name={secureTextEntry ? 'eye-off' : 'eye'} />
+	);
+	let secondTextInput = null
+	return (
+		<Layout style={style.ViewStyle}>
+			<View style={{ flex: 1 }}>
+				<Layout level={'4'} style={{ height: 200 }}>
+					<Image
+						style={{ flex: 1 }}
+						source={{ uri: 'https://img.indiefolio.com/fit-in/1100x0/filters:format(webp):fill(transparent)/project/body/388476be0eff4cc3096f58e67d81bac0.jpg' }}
+					/>
+				</Layout>
 
-	render() {
-		return (
-			<View style={style.ViewStyle}>
-				<StatusBar backgroundColor={color.Primary} barStyle={color.stutsbarContent} />
-
-				<Text style={style.TextStyle}>WELCOME ,</Text>
-				<Text style={style.subTextStyle}>sign in to continue</Text>
+			</View>
+			<View style={{ flex: 1 }}>
 
 				<Mutation mutation={login}>
 					{(login, { data }) => (
 						<View style={style.inputContainer}>
 							<Input
-								inputStyle={style.inputStyle}
 								placeholder="Email"
-								rightIcon={{
-									type: 'font-awesome',
-									name: 'check',
-									color: this.state.emailcolor,
-									size: 15
-								}}
-								autoCapitalize = 'none'
-								onChangeText={(e) => this.setState({ username: e })}
-								placeholderTextColor={color.PrimaryF}
-								returnKeyType = { "next" }
-								onSubmitEditing={() => { this.secondTextInput.focus(); }}
+								style={{ marginTop: 10 }}
+								autoCapitalize='none'
+								onChangeText={(e) => setusername(e)}
+								returnKeyType={"next"}
+								onSubmitEditing={() => { secondTextInput.focus(); }}
 								blurOnSubmit={false}
 							/>
 							<Input
-								inputStyle={style.inputStyle}
-								ref={(input) => { this.secondTextInput = input; }}
-								placeholder="Password"
-								secureTextEntry={true}
-								autoCapitalize = 'none'
-								rightIcon={{
-									type: 'font-awesome',
-									name: 'check',
-									color: this.state.passwordcolor,
-									size: 15
-								}}
-								onChangeText={(e) => this.setState({ password: e })}
-								placeholderTextColor={color.PrimaryF}
-								onSubmitEditing={() => this.LoginNow(login)}
+								ref={(input) => { secondTextInput = input; }}
+								placeholder="*******"
+
+								style={{ marginTop: 10 }}
+								secureTextEntry={secureTextEntry}
+								icon={renderIcon}
+								autoCapitalize='none'
+								onIconPress={onIconPress}
+								onChangeText={(e) => setpassword(e)}
+								onSubmitEditing={() => Login(login)}
 							/>
 
-							<GButton loading={this.state.ll} Text={'LOGIN'} onPress={() => this.LoginNow(login)} />
+							<GButton loading={loading} Text={'LOGIN'} onPress={() => Login(login)} />
+							<Text status='danger'>{error}</Text>
+
 						</View>
 					)}
 				</Mutation>
-
-				<ButtonC Text={'REGISTER ?'} onPress={() => this.props.navigation.navigate('Register')} />
 			</View>
-		);
-	}
+
+			<ButtonC Text={'REGISTER ?'} onPress={() => navigation.navigate('Register')} />
+		</Layout>
+	)
+
+
 }
-const style =  StyleSheet.create({
+
+
+const style = StyleSheet.create({
 	ViewStyle: {
-		backgroundColor: color.Primary,
-		flex: 1,
-		padding: 30
+		padding: 30,
+		flex: 1
 	},
 	TextStyle: {
-		color: color.PrimaryF,
 		marginTop: 20,
 		fontSize: 30,
-		fontFamily: 'Montserrat-Bold'
+
 	},
 	subTextStyle: {
-		color: color.PrimaryF,
-		top: -8,
 		fontSize: 20,
 		fontFamily: 'Montserrat-Light'
 	},
 	inputStyle: {
 		fontSize: 15,
-		color: color.PrimaryF,
 		fontFamily: 'Montserrat-Light'
 	},
 	inputContainer: {
@@ -128,6 +133,9 @@ const style =  StyleSheet.create({
 		flex: 1
 	}
 });
+
+
+
 const mapStateToProps = (state /*, ownProps*/) => {
 	return {};
 };

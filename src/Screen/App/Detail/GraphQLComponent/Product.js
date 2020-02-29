@@ -1,14 +1,13 @@
 import React, {  } from 'react';
-import { View,Dimensions,FlatList,Text,Animated,ActivityIndicator } from 'react-native';
+import { View,Dimensions,FlatList,Animated,ActivityIndicator } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { ThemeColor as color } from '../../../../colors'
 import {productsSorted} from '../../../../Graphql/Actions/index'
-
+import {Text} from '@ui-kitten/components'
 
 const GetProducts = (props) =>{
   const dataa = OrderBY(props.orderby)
 	const { data, loading, error } = useQuery(productsSorted(dataa.filter));
-	if (loading) return <ActivityIndicator size="large" color={color.PrimaryF} />;
+	if (loading) return <View />;
 	if (error) return <Text>ERROR</Text>;
 	return (
     <View style={{marginLeft:15,marginRight:15,marginTop:10}}>
@@ -17,7 +16,6 @@ const GetProducts = (props) =>{
         <View style={{ flex: 1 }}>
           <Text
             style={{
-              color: color.PrimaryF,
               fontSize: 18,
               fontFamily: 'Montserrat-SemiBold'
             }}
@@ -27,9 +25,8 @@ const GetProducts = (props) =>{
         </View>
 
         <View style={{ flexDirection: 'row-reverse' }}>
-          <Text
+          <Text status='danger'
             style={{
-              color: color.BtnG[0],
               fontSize: 13,
               fontFamily: 'Montserrat-SemiBold'
             }}
