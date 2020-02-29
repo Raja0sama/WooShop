@@ -23,8 +23,8 @@ const login = gql`
 
 const register = gql`
 mutation REGISTER_USER($input: RegisterUserInput!) {
-	registerUser(input: $input) {
-	  user {
+	registerCustomer(input: $input) {
+		customer {
 		id
 		name
 	  }

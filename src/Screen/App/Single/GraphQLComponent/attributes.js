@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, Picker } from 'react-native';
-import { Divider  } from 'react-native-elements';
-import { ThemeColor as color } from '../../../../colors'
+import { View } from 'react-native';
+import { Text } from '@ui-kitten/components'
 
 export default class Atributes extends React.Component {
 	constructor(props) {
@@ -16,7 +15,6 @@ export default class Atributes extends React.Component {
 				{this.props.options.map((e) => e.visible ? (
                     <View><Text
 					style={{
-						color: color.PrimaryF,
 						fontSize: 17,
 						fontFamily: 'Montserrat-Bold'
 					}}
@@ -24,13 +22,11 @@ export default class Atributes extends React.Component {
 					Atribute Name : {e.name}
 				</Text>
 					<Text style={{
-                        color: color.PrimaryF,
 						fontSize: 17,
 						fontFamily: 'Montserrat-Light'
                     }}>
                     {e.options.join(', ')}
                     </Text>
-                    <Divider style={{ backgroundColor: 'blue' }} />
                     </View>
 				) : (<View/>))}
 			</View>

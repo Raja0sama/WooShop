@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View,Dimensions,FlatList,Text,Animated,ActivityIndicator } from 'react-native';
+import { View,Dimensions,FlatList } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import {ThemeColor as color } from '../../../../colors'
 import {productsByCategories} from '../../../../Graphql/Actions/index'
-
+import {
+Text	
+} from '@ui-kitten/components';
 
 
 const GetProducts = (props) =>{
@@ -18,7 +19,6 @@ const GetProducts = (props) =>{
         <View style={{ flex: 1 }}>
           <Text
             style={{
-              color: color.PrimaryF,
               fontSize: 18,
               fontFamily: 'Montserrat-SemiBold'
             }}
@@ -30,7 +30,6 @@ const GetProducts = (props) =>{
         <View style={{ flexDirection: 'row-reverse' }}>
           <Text
             style={{
-              color: color.PrimaryF,
               fontSize: 13,
               fontFamily: 'Montserrat-SemiBold'
             }}

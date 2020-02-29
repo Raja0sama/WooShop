@@ -1,16 +1,15 @@
 import React, { Component, useState } from 'react';
-import { View,  ScrollView,FlatList,Text,ActivityIndicator } from 'react-native';
-import { Input ,Image,Badge, Icon } from 'react-native-elements';
+import { View, Image, ScrollView,ActivityIndicator } from 'react-native';
 import striptags from 'striptags';
 import {connect } from 'react-redux'
-import { ThemeColor as color } from '../colors'
+import { Text,Input,Icon  } from '@ui-kitten/components';
 
 
 const CheckoutCard = ({data,ind,index,dispatch}) => {
     const [state, setstate] = useState(true);
  
     return (
-        <View style={{height:130,borderTopWidth:0.1,borderBottomWidth:0.1,borderColor:color.PrimaryF,flexDirection:"row",marginTop:10,marginBottom:5}}>
+        <View style={{height:130,borderTopWidth:0.1,borderBottomWidth:0.1,flexDirection:"row",marginTop:10,marginBottom:5}}>
         <View style={{width:130}}>
         <Image
            source={{ uri: data[1].image.sourceUrl }}
@@ -21,10 +20,10 @@ const CheckoutCard = ({data,ind,index,dispatch}) => {
         <View style={{flex:1}}>
             <View style={{flex:1,margin:10}}>
                 <ScrollView>
-                <Text style={{fontSize:22,fontFamily: 'Montserrat-Light',color:color.PrimaryF}}>
+                <Text style={{fontSize:22,fontFamily: 'Montserrat-Light'}}>
                     {data[1].name}
             </Text>
-            <Text style={{fontSize:15,fontFamily: 'Montserrat-Light',color:color.PrimaryF}}>
+            <Text style={{fontSize:15,fontFamily: 'Montserrat-Light'}}>
                     {striptags(data[1].description)}
              </Text>
                     </ScrollView>
@@ -33,16 +32,15 @@ const CheckoutCard = ({data,ind,index,dispatch}) => {
         <View style={{height:30,flexDirection:"row"}}>
            
            <Input containerStyle={{width:30}}
-           inputContainerStyle={{width:30,height:25}}
-           inputStyle={{color:color.PrimaryF}}
+           style={{marginLeft:20}}
            value={''+ind.Q}
            />
-            <Text style={{fontSize:16,top:5,left:10,fontFamily: 'Montserrat-Light',color:color.PrimaryF}}>
+            <Text style={{top:5,left:10,fontFamily: 'Montserrat-Light'}}>
                    Quantity
             </Text>
             <View style={{flexDirection:"row-reverse",flex:1}}>
 
-            <Text style={{fontSize:16,top:5,left:10,fontFamily: 'Montserrat-Light',color:color.PrimaryF}}>
+            <Text style={{top:5,left:10,fontFamily: 'Montserrat-Light'}}>
             {data[1].price}{" T $"+parseInt(data[1].price.replace('$',''))*parseInt(ind.Q)}
             </Text>
             
@@ -50,14 +48,10 @@ const CheckoutCard = ({data,ind,index,dispatch}) => {
         </View>
 
         </View>
-        <Badge
-               status="error"
-               containerStyle={{padding:5}}
-               value={<Icon  name='close'
-               type='evilicon'
-               color='white'></Icon>
-                   }
-               containerStyle={{ position: 'absolute', top: 0, right: 4 }}
+        <Icon
+         width={32} height={32} 
+                name={'close-circle-outline'}
+               style={{ position: 'absolute', top: 0, right: 4 }}
                onPress={()=> {
                 setstate(false)   
                 dispatch({type:'CART_DELETE',product:index})

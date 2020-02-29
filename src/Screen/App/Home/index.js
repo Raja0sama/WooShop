@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import { View, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import {HeaderC,SearchC,ICard,TCarC} from '../../../component/index';
 
 
@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import GetCat from './GraphQLComponent/Cat.js'
 import GetPop from './GraphQLComponent/products.js'
 import { connect } from 'react-redux'
-import {ThemeColor as color } from '../../../colors'
+import { Layout,Text } from '@ui-kitten/components';
 
 class Home extends Component {
 	constructor(props) {
@@ -36,7 +36,6 @@ class Home extends Component {
 	}
 	 style =  StyleSheet.create({
 		ViewStyle: {
-			backgroundColor: color.Primary,
 			flex: 1
 		}
 	});
@@ -44,8 +43,8 @@ class Home extends Component {
 	render() {
 		var { height, width } = Dimensions.get('window');
 		return (
-			<View style={this.style.ViewStyle}>
-				<View style={{backgroundColor:color.Primary,paddingBottom:20}} >
+			<Layout style={this.style.ViewStyle}>
+				<View style={{paddingBottom:20}} >
 					<HeaderC navigation={this.props.navigation} />
 					<SearchC  />
 				</View>
@@ -57,7 +56,6 @@ class Home extends Component {
 								<Text
 									style={{
 										marginLeft:20,
-										color: color.PrimaryF,
 										fontSize: 18,
 										fontFamily: 'Montserrat-SemiBold'
 									}}
@@ -70,7 +68,6 @@ class Home extends Component {
 								<Text
 									style={{
 										marginRight:20,
-										color: color.PrimaryF,
 										fontSize: 13,
 										fontFamily: 'Montserrat-SemiBold'
 									}}
@@ -88,19 +85,15 @@ class Home extends Component {
 					</View>
 					<View style={{marginTop:20}}>
 
-					{/* <Divider style={{ backgroundColor: color.PrimaryF, opacity: 0.1, marginTop: 20, marginBottom: 20 }} /> */}
 					<GetPop navigation={this.props.navigation} orderby={0} render={this._renderItem1} />
-					{/* <Divider style={{ backgroundColor: color.PrimaryF, opacity: 0.1, marginTop: 20, marginBottom: 20 }} /> */}
 					<GetPop navigation={this.props.navigation} orderby={1} render={this._renderItem1} />
-					{/* <Divider style={{ backgroundColor: color.PrimaryF, opacity: 0.1, marginTop: 20, marginBottom: 20 }} /> */}
 					<GetPop navigation={this.props.navigation} orderby={2} render={this._renderItem1} />
-					{/* <Divider style={{ backgroundColor: color.PrimaryF, opacity: 0.1, marginTop: 20, marginBottom: 20 }} /> */}
 					<GetPop navigation={this.props.navigation} orderby={3} render={this._renderItem1} />
 
 					</View>
 
 				</ScrollView>
-			</View>
+			</Layout>
 		);
 	}
 }

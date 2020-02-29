@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, ScrollView, FlatList, Text, Animated } from 'react-native';
-import { } from 'react-native-elements';
+import { View, StyleSheet, Dimensions, ScrollView, FlatList, Animated } from 'react-native';
 
 import {HeaderC,SearchC,CarC} from '../../../component/index';
 
 import { categories1 } from '../../../Graphql/Actions/index';
-import {ThemeColor as color } from '../../../colors'
 import axios from 'axios';
+import { Layout ,Text } from '@ui-kitten/components';
 
 
 class Cate extends Component {
@@ -37,14 +36,13 @@ class Cate extends Component {
 	};
 	style =  StyleSheet.create({
 		ViewStyle: {
-			backgroundColor: color.Primary,
 			flex: 1
 		}
 	});
 	render() {
 		return (
-			<View style={this.style.ViewStyle}>
-				<View style={{ backgroundColor: color.Primary, paddingBottom: 20 }} >
+			<Layout style={this.style.ViewStyle}>
+				<View style={{ backgroundColor: "transparent", paddingBottom: 20 }} >
 					<HeaderC navigation={this.props.navigation} />
 					<SearchC />
 				</View>
@@ -54,7 +52,6 @@ class Cate extends Component {
 							<View style={{ flex: 1 }}>
 								<Text
 									style={{
-										color: color.PrimaryF,
 										fontSize: 18,
 										fontFamily: 'Montserrat-SemiBold'
 									}}
@@ -65,8 +62,8 @@ class Cate extends Component {
 
 							<View style={{ flexDirection: 'row-reverse' }}>
 								<Text
+								status="danger"
 									style={{
-										color: color.BtnG[0],
 										fontSize: 13,
 										fontFamily: 'Montserrat-SemiBold'
 									}}
@@ -80,7 +77,7 @@ class Cate extends Component {
 						<FlatList data={this.state.entries} renderItem={this._renderItem} numColumns={2} />
 					</View>
 				</ScrollView>
-			</View>
+			</Layout>
 		);
 	}
 }

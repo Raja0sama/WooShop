@@ -1,4 +1,3 @@
-import { ThemeColor as color } from '../../../../colors'
 import { CheckoutCard } from '../../../../component/index';
 
 import React, { } from 'react';
@@ -6,12 +5,12 @@ import {
   View,
   Dimensions,
   FlatList,
-  Text,
   Animated,
   ActivityIndicator
 } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import { Text } from '@ui-kitten/components';
 let i = 0
 
 const GET_PRODUCTS = (orderby) => gql`
@@ -21,19 +20,19 @@ query {
 `;
 const GetProducts = (props) => {
   let Cart = props.Cart;
-  // let cart = []; Cart.forEach((element) => {   console.log(element);   if
+  // let cart = []; Cart.forEach((element) => {      if
   // (cart.some((item) => item.id === element.id)) {     const a =
   // cart.findIndex((i) => i.id === element.id);     //
   // console.log(cart.findIndex(i => i.id === element.id))     cart[a].Q =
   // cart[a].Q + element.Q;   } else {     cart.push(element);   } });
-  // console.log(cart); let a = Refactoring(cart); console.log(a)
+  // console.log(cart); let a = Refactoring(cart); 
 
   if (!Refactoring(Cart))
-    return <Text style={{ marginLeft: 20, color: color.PrimaryF }}>Empty !</Text>;
+    return <Text style={{ marginLeft: 20,   }}>Empty !</Text>;
 
   const { data, loading, error } = useQuery(GET_PRODUCTS(Refactoring(Cart)));
   if (loading)
-    return <ActivityIndicator size="large" color={color.PrimaryF} />;
+    return <ActivityIndicator size="large"  />;
   if (error)
     return <Text>ERROR</Text>;
   var result = Object

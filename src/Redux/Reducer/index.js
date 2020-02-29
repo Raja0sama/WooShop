@@ -1,23 +1,21 @@
 import { combineReducers } from 'redux'
-import {LOGINUSER,CART,CART_ADD,CART_DELETE,CART_QE,CartTotal} from '../Constants/index'
+import {LOGINUSER,CART,CART_ADD,CART_DELETE,CART_QE,CartTotal,LOGOUTUSER} from '../Constants/index'
 
 
-function authentication(state = [], action) {
+function authentication(state = {
+  logout: true
+}, action) {
+  
   switch (action.type) {
     case LOGINUSER:
       return {
             user: action.user,
+            logout : false
         }
-      
-    // case TOGGLE_TODO:
-    //   return state.map((todo, index) => {
-    //     if (index === action.index) {
-    //       return Object.assign({}, todo, {
-    //         completed: !todo.completed
-    //       })
-    //     }
-    //     return todo
-    //   })
+    case LOGOUTUSER:
+      return {
+          logout : true
+      }
     default:
       return state
   }

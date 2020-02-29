@@ -1,40 +1,72 @@
-import { Header, Icon, Badge } from "react-native-elements";
-import { View, StatusBar, Text } from "react-native";
+import { View, StatusBar } from "react-native";
 import React, { Component } from "react";
 import { connect } from 'react-redux'
-import {ThemeColor as color } from '../colors'
-import {DrawerActions } from 'react-navigation-drawer'
-const HeaderC = ({ navigation, heading, Cart }, props) => {
+import { useNavigation  } from '@react-navigation/native';
+import {
+  Icon,
+  TopNavigation,
+  TopNavigationAction,Text,useTheme
+} from '@ui-kitten/components';
+import ThemeContext from '../theme-context'
+
+
+const BackIcon = (style) => (
+  <Icon {...style} name='arrow-back'/>
+);
+
+const CartIcon = (style) => (
+  <Icon {...style} name='shopping-cart-outline'/>
+);
+
+const MenuIcon = (style) => (
+  <Icon {...style} name='menu-outline'/>
+);
+
+
+const BackAction = (props) => (
+  <TopNavigationAction {...props} icon={BackIcon}/>
+);
+
+const CartAction = (props) => (
+  <TopNavigationAction {...props} icon={CartIcon}/>
+);
+
+const MenuAction = (props) => (
+  <TopNavigationAction {...props} icon={MenuIcon}/>
+);
+const HeaderC = ({  heading, Cart }, props) => {
+  const navigation = useNavigation();
+  const onBackPress = () => {
+  };
+
+  const renderLeftControl = () => (
+    <MenuAction  onPress={()=>navigation.openDrawer()}/>
+  );
+
+  const renderRightControls = () => [
+    <CartAction
+    onPress={() => navigation.navigate('Cart')}
+    />,
+    <Text>
+     {Cart.cart ? Cart.cart.length : 0}
+      </Text>
+    // <MenuAction/>,
+  ];
+
+	// const themeContext = React.useContext(ThemeContext);
+
+  // const themee = useTheme();
+  
+
   return (
     <View>
-      <StatusBar backgroundColor={color.Primary} barStyle={color.stutsbarContent} />
-      <Header
+      		{/* <StatusBar backgroundColor={ themee["color-basic-800"] } barStyle={themeContext.theme == "light" ? "dark-content" : "light-content"} /> */}
 
-        containerStyle={{
-          height: 40,
-          backgroundColor: 'transparent',
-          marginBottom: 20,
-          justifyContent: 'space-around', borderBottomWidth: 0
-        }}
-        centerComponent={{ text: heading, style: { fontSize: 20, color: color.PrimaryF, fontFamily: 'Montserrat-Bold' } }}
-
-        leftComponent={{
-          icon: 'menu', color: color.SLight,
-          onPress:()=>{navigation.dispatch(DrawerActions.openDrawer())}
-        }}
-        rightComponent={
-          <View><Icon name='shoppingcart'
-            type='antdesign'
-            onPress={() => navigation.navigate('Cart')}
-            color={color.SLight} />
-            {Cart.cart.length != 0 ? (<Badge
-              status="primary"
-              onPress={() => navigation.navigate('Cart')}
-              value={<Text style={{ fontSize: 10 }}>{Cart.cart ? Cart.cart.length : 0}</Text>}
-              containerStyle={{ position: 'absolute', top: -4, right: -4 }}
-            />) : (<View></View>)}
-          </View>}
-      />
+      <TopNavigation
+      title={heading}
+      leftControl={renderLeftControl()}
+      rightControls={renderRightControls(Cart)}
+    />
     </View>
   )
 }
@@ -46,4 +78,3 @@ const mapStateToProps = (state /*, ownProps*/) => {
 export default connect(
   mapStateToProps)(HeaderC);
 
-// { icon: 'shopping-cart', color: color.SLight }

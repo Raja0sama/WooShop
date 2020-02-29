@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Dimensions, StyleSheet, Text, ActivityIndicator } from 'react-native';
+import { View, Dimensions, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, Layout } from '@ui-kitten/components'
 import { useQuery } from '@apollo/react-hooks';
 import { SliderBox } from 'react-native-image-slider-box';
 import striptags from 'striptags';
-import { ThemeColor as color } from '../../../../colors'
 import { singleProduct } from '../../../../Graphql/Actions/index'
 
-
+import { useTheme } from '@ui-kitten/components'
 
 
 let gal = '';
@@ -15,32 +15,30 @@ const setGal = (p) => {
 };
 let a = '';
 const GetProduct = (props) => {
+
+	const theme = useTheme();
+
 	var { height, width } = Dimensions.get('window');
 	const style = StyleSheet.create({
 		ViewStyle: {
-			backgroundColor: color.Primary,
 			flex: 1
 		},
 		TextStyle: {
-			color: color.PrimaryF,
-			fontSize: 30,
 			fontFamily: 'Montserrat-Bold'
 		},
 		CStyle: {
-			color: color.PrimaryF,
-			fontSize: 17,
 			fontFamily: 'Montserrat-Bold'
 		}
 	});
 	const { data, loading, error } = useQuery(singleProduct(props.query));
-	if (loading) return <ActivityIndicator size="large" color={color.PrimaryF} />;
+	if (loading) return <View />;
 	if (error) return <Text>ERROR</Text>;
 	const loop = () => {
 		let str = '';
 		for (let i = 0; i < Math.abs(data.product.averageRating); i++) {
 			str += '⭐';
 		}
-		return <Text style={{ fontSize: 22, fontFamily: 'Montserrat-Light', color: color.PrimaryF }}>{str}</Text>;
+		return <Text style={{ fontFamily: 'Montserrat-Light' }}>{str}</Text>;
 	};
 	let gallery = [];
 	gallery = data.product.galleryImages.nodes;
@@ -62,29 +60,29 @@ const GetProduct = (props) => {
 				/>
 			</View>
 			<View style={{ flex: 1, margin: 30, alignItems: 'center' }}>
-				<Text style={style.TextStyle}>✔{data.product.name} </Text>
+				<Text h1 style={style.TextStyle}>✔{data.product.name} </Text>
 				{data.product.onSale ? (
-					<Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 23, color: color.PrimaryF }}>🛒 Sale </Text>
+					<Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 23 }}>🛒 Sale </Text>
 				) : (
 						<View />
 					)}
 				<Text style={style.CStyle}>{cat.join(', ')} </Text>
-				<Text style={{ fontSize: 22, fontFamily: 'Montserrat-Light', color: color.PrimaryF }}>
+				<Text style={{ fontFamily: 'Montserrat-Light' }}>
 					{data.product.price.replace('$', '💲')}
 				</Text>
 				{loop()}
-				<Text style={{ fontSize: 18, fontFamily: 'Montserrat-Light', color: color.PrimaryF }}>
+				<Text style={{ fontFamily: 'Montserrat-Light' }}>
 					🔵{striptags(data.product.description)}
 				</Text>
-				<Text style={{ fontSize: 15, fontFamily: 'Montserrat-Light', color: color.PrimaryF }}>
+				<Text style={{ fontFamily: 'Montserrat-Light' }}>
 					🤞SKU :{striptags(data.product.sku)}
 				</Text>
 				{/* <Attributes options={data.product.attributes ? data.product.attributes.nodes : []} /> */}
 				{data.product.purchaseNote ? (
-					<View style={{ backgroundColor: color.BtnG[1], flex: 1, marginLeft: 20, marginRight: 20 }}>
-						<Text style={{ color: color.SecondaryF, padding: 5, fontWeight: 'bold' }}>PURHCASE NOTE : </Text>
-						<Text style={{ color: color.SecondaryF, padding: 5 }}>{data.product.purchaseNote} </Text>
-					</View>
+					<Layout level="2" style={{  flex: 1,paddingHorizontal:10,paddingVertical:10 }}>
+						<Text style={{ padding: 5, fontWeight: 'bold' }}>PURHCASE NOTE : </Text>
+						<Text style={{ padding: 5 }}>{data.product.purchaseNote} </Text>
+					</Layout>
 				) : (
 						<View />
 					)}

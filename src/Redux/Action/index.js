@@ -1,7 +1,10 @@
-import {LOGINUSER , CART_ADD , CART_DELETE , CART_QE,CART,CartTotal} from '../Constants/index'
+import {LOGINUSER , CART_ADD , CART_DELETE , CART_QE,CART,CartTotal,LOGOUTUSER} from '../Constants/index'
 
 export function LoginUser(user) {
   return { type: LOGINUSER, user }
+}
+export function LogoutUser() {
+  return { type: LOGOUTUSER }
 }
 
 export function CARTadd(product) {

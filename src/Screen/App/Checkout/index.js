@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { Input, Card, CheckBox, Overlay, Button } from 'react-native-elements';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Mutation } from 'react-apollo';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -8,9 +7,9 @@ import axios from 'axios';
 import { print } from 'graphql';
 import Toast from 'react-native-simple-toast';
 import { connect } from 'react-redux'
-import { ThemeColor as color } from '../../../colors'
 import {checkout,refreshToken,addToCart} from '../../../Graphql/Actions/index'
 import {HeaderC,} from '../../../component/index';
+import { CheckBox,Input,Text,Layout,Modal,Button } from '@ui-kitten/components';
 
 
 
@@ -25,6 +24,7 @@ class Checkout extends React.Component {
 
 		AsyncStorage.getItem('userToken').then(res => {
 			this.setState({ user: JSON.parse(res) })
+			console.log(this.state.user)
 			// this.refreshToken(JSON.parse(res).authToken)
 			// console.log(JSON.parse(res).authToken)
 		})
@@ -40,9 +40,9 @@ class Checkout extends React.Component {
 					this.props.dispatch({ type: 'CART_DELETE', product: 0 })
 				}
 				this.setState({ isVisible: true })
-			}).catch(err => console.log(err))
+			}).catch(err => {})
 
-		}).catch(err => console.log(err))
+		}).catch(err => {})
 
 	}
 	falling() {
@@ -89,13 +89,13 @@ class Checkout extends React.Component {
 					Toast.show("Make sure to enter username and password correctly");
 				}
 			})
-			.catch(err => console.log(err))
+			.catch(err => {} )
 	}
 
 	render() {
 
 		return this.state.user ? (
-			<View style={{ backgroundColor: color.Primary }}>
+			<Layout style={{  }}>
 				<HeaderC heading={'Checkout'} navigation={this.props.navigation} />
 
 				<Mutation
@@ -157,7 +157,7 @@ class Checkout extends React.Component {
 						{(CheckoutInput, { data, error }) => (
 							<View style={{ margin: 20 }}>
 								{data && (<DoRedirect2Home navigation={this.props.navigation} data={data} />)}
-								<Card containerStyle={{ backgroundColor: "#c7c7c7" }} title="Billing Information">
+								<Layout style={{marginVertical:10,padding:10}} level='4' title="Billing Information">
 									<Input placeholder="First Name" onChangeTextText={(e) => this.setState({ bfn: e })} />
 									<Input placeholder="Last Name" onChangeTextText={(e) => this.setState({ bln: e })} />
 									<Input placeholder="Address 1" onChangeTextText={(e) => this.setState({ ba1: e })} />
@@ -170,14 +170,16 @@ class Checkout extends React.Component {
 									<Input placeholder="PostCode" onChangeText={(e) => this.setState({ bpc: e })} />
 									<Input placeholder="State" onChangeText={(e) => this.setState({ bs: e })} />
 									<CheckBox
+									  status='control'
+									  text='Control'
 										center
 										title="Ship to different Address ?"
 										checked={this.state.checked}
-										onPress={() => this.setState({ checked: !this.state.checked })}
+										onChange={() => this.setState({ checked: !this.state.checked })}
 									/>
-								</Card>
+								</Layout>
 								{this.state.checked ? (
-									<Card containerStyle={{ backgroundColor: "#c7c7c7" }} title="Shipping Information">
+									<Layout style={{marginVertical:10,padding:10}} level='4'  title="Shipping Information">
 										<Input placeholder="First Name" onChangeText={(e) => this.setState({ sfn: e })} />
 										<Input placeholder="Last Name" onChangeText={(e) => this.setState({ sln: e })} />
 										<Input placeholder="Address 1" onChangeText={(e) => this.setState({ sa1: e })} />
@@ -189,34 +191,21 @@ class Checkout extends React.Component {
 										<Input placeholder="Phone" onChangeText={(e) => this.setState({ sp: e })} />
 										<Input placeholder="PostCode" onChangeText={(e) => this.setState({ spc: e })} />
 										<Input placeholder="State" onChangeText={(e) => this.setState({ ss: e })} />
-									</Card>
+									</Layout>
 								) : (
 										<View />
 									)}
-								<Card containerStyle={{ backgroundColor: "#c7c7c7"}} title="Payment Method">
+								<Layout style={{marginVertical:10,padding:10}} level='4' title="Payment Method">
 									<Text>Cash On Delivery Only Supported YET!</Text>
-								</Card>
-								<TouchableOpacity
+								</Layout>
+								<Button
 									onPress={() => {
 										this.checkout(CheckoutInput);
 									}}
 								>
-									<LinearGradient
-										start={{ x: 1, y: 2 }}
-										end={{ x: 0.1, y: 0.2 }}
-										colors={color.BtnG}
-										style={{
-											alignItems: 'center',
-											justifyContent: 'center',
-											margin: 10,
-											height: 50,
-											borderRadius: 20,
-											marginBottom: 60
-										}}
-									>
-										<Text style={{ color: color.Secondary, fontSize: 20 }}>CHECKOUT</Text>
-									</LinearGradient>
-								</TouchableOpacity>
+									
+									CHECKOUT
+								</Button>
 							</View>
 						)}
 					</Mutation>
@@ -231,7 +220,7 @@ class Checkout extends React.Component {
 			
 				
 
-			</View>
+			</Layout>
 		) : (<View />)
 	}
 }
@@ -253,11 +242,11 @@ class DoMutation extends React.Component {
 };
 
 class DoRedirect extends React.Component {
-	componentDidMount() {
+	async componentDidMount() {
 
 		if (this.props.error) {
-			AsyncStorage.removeItem('userToken')
-			this.props.navigation.navigate('Login')
+			await AsyncStorage.removeItem('userToken')
+			this.props.dispatch({ type: 'LOGOUTUSER' });
 		}
 	};
 
@@ -282,13 +271,13 @@ class DoRedirect2Home extends React.Component {
 	};
 
 	render() {
-		return (<Overlay isVisible={this.state.isVisible}>
-			<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-				<Text style={{ fontSize: 150 }}>✔</Text>
+		return (<Modal visible={this.state.isVisible}>
+			<Layout level={'4'} style={{ flex: 1, justifyContent: 'center', alignItems: 'center',    minHeight: 256,
+    padding: 16, }}>
 				<Text style={{ fontSize: 20 }}>Success</Text>
-				<Button onPress={() => this.props.navigation.navigate('Home')} title="Close" />
-			</View>
-		</Overlay>)
+				<Button onPress={() => this.props.navigation.navigate('Home')} > Close </Button>
+			</Layout>
+		</Modal>)
 	};
 };
 
