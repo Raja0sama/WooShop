@@ -1,4 +1,4 @@
-# WooShop
+# SuperSami-WooShop
 ![alt text](https://i.imgur.com/prI2Frz.png "GraphQL")
 
 This is an Open source Project and you guys are most welcome to Contribute, You can use this as totally free. All i need is just Some credit 😎
