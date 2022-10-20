@@ -39,7 +39,7 @@
     "react-native-image-slider-box": "^1.0.5",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-modal-wrapper": "^3.1.1",
-    "react-native-reanimated": "^1.1.0",
+    "react-native-reanimated": "^2.10.0",
     "react-native-responsive-screen": "^1.4.1",
     "react-native-restart": "^0.0.13",
     "react-native-safe-area-context": "^0.6.2",
